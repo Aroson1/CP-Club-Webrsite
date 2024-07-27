@@ -9,6 +9,7 @@ package-lock.json
 # testing
 /coverage
 /local
+/src/components/__tests__
 # production
 /build
 

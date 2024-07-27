@@ -15,11 +15,11 @@ const blogDetail = {
   comments: 50,
   views: 35,
   content: (
-    <div className="ud-blog-details-content">
-      <h2 className="ud-blog-details-title">
+    <div className="cpc-blog-details-content">
+      <h2 className="cpc-blog-details-title">
         Blog Title Goes here my good sir...
       </h2>
-      <p className="ud-blog-details-para">
+      <p className="cpc-blog-details-para">
         There's a time and place for everything… including asking for reviews.
         For instance: you should not asking for a review on your checkout page.
         The sole purpose of this page is to guide your customer to complete
@@ -27,7 +27,7 @@ const blogDetail = {
         pared-down possible. You don't want to have any unnecessary elements or
         Call To Actions.
       </p>
-      <p className="ud-blog-details-para">
+      <p className="cpc-blog-details-para">
         There's a time and place for everything… including asking for reviews.
         For instance: you should not asking for a review on your checkout page.
         The sole purpose of this page is to guide your customer to complete
@@ -35,8 +35,8 @@ const blogDetail = {
         pared-down possible. You don't want to have any unnecessary elements or
         Call To Actions.
       </p>
-      <h3 className="ud-blog-details-subtitle">Sea no quidam vulputate</h3>
-      <p className="ud-blog-details-para">
+      <h3 className="cpc-blog-details-subtitle">Sea no quidam vulputate</h3>
+      <p className="cpc-blog-details-para">
         At quo cetero fastidii. Usu ex ornatus corpora sententiae, vocibus
         deleniti ut nec. Ut enim eripuit eligendi est, in iracundia
         signiferumque quo. Sed virtute suavitate suscipiantur ea, dolor this can
@@ -44,15 +44,15 @@ const blogDetail = {
         impedit ne. Erant appareat corrumpit ei vel.
       </p>
 
-      <h3 className="ud-blog-details-subtitle">What is it with your ideas?</h3>
-      <p className="ud-blog-details-para">
+      <h3 className="cpc-blog-details-subtitle">What is it with your ideas?</h3>
+      <p className="cpc-blog-details-para">
         At quo cetero fastidii. Usu ex ornatus corpora sententiae, vocibus
         deleniti ut nec. Ut enim eripuit eligendi est, in iracundia
         signiferumque quo. Sed virtute suavitate suscipiantur ea, dolor this can
         eloquentiam ei pro. Suas adversarium interpretaris eu sit, eum viris
         impedit ne. Erant appareat corrumpit ei vel.
       </p>
-      <p className="ud-blog-details-para">
+      <p className="cpc-blog-details-para">
         At quo cetero fastidii. Usu ex ornatus corpora sententiae, vocibus
         deleniti ut nec. Ut enim eripuit eligendi est, in iracundia
         signiferumque quo. Sed virtute suavitate suscipiantur ea, dolor this can
@@ -136,21 +136,21 @@ export default function BlogDetailsPage() {
     <section className="">
       <SideBar />
       <img alt="..." className="dots" src={require("assets/img/dots.png")} />
-      <section className="ud-blog-details" style={{ marginLeft: "78px" }}>
+      <section className="cpc-blog-details" style={{ marginLeft: window.innerWidth > 500 ? "78px" : "0" }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <div className="ud-blog-details-image">
+              <div className="cpc-blog-details-image">
                 <img src={blogDetail.image} alt="blog details" />
-                <div className="ud-blog-overlay">
-                  <div className="ud-blog-overlay-content">
-                    <div className="ud-blog-author">
+                <div className="cpc-blog-overlay">
+                  <div className="cpc-blog-overlay-content">
+                    <div className="cpc-blog-author">
                       <img src={blogDetail.authorImage} alt="author" />
                       <span>
                         By <a href="#">{blogDetail.authorName}</a>
                       </span>
                     </div>
-                    <div className="ud-blog-meta">
+                    <div className="cpc-blog-meta">
                       <p className="date">
                         <i className="lni lni-calendar"></i>{" "}
                         <span>{blogDetail.date}</span>
@@ -171,17 +171,17 @@ export default function BlogDetailsPage() {
 
             <div className="col-lg-8">
               {blogDetail.content}
-              <div className="ud-blog-details-action">
-                <ul className="ud-blog-tags">
+              <div className="cpc-blog-details-action">
+                <ul className="cpc-blog-tags">
                   {blogDetail.tags.map((tag, index) => (
                     <li key={index}>
                       <a href="#">{tag}</a>
                     </li>
                   ))}
                 </ul>
-                <div className="ud-blog-share">
+                <div className="cpc-blog-share">
                   <h6>Share This Post</h6>
-                  <ul className="ud-blog-share-links">
+                  <ul className="cpc-blog-share-links">
                     <li>
                       <a href="#" className="facebook">
                         <i className="lni lni-instagram-filled"></i>
@@ -197,20 +197,20 @@ export default function BlogDetailsPage() {
               </div>
             </div>
             <div className="col-lg-4">
-              <div className="ud-blog-sidebar">
-                <div className="ud-articles-box">
-                  <h3 className="ud-articles-box-title">Popular Articles</h3>
-                  <ul className="ud-articles-list">
+              <div className="cpc-blog-sidebar">
+                <div className="cpc-articles-box">
+                  <h3 className="cpc-articles-box-title">Popular Articles</h3>
+                  <ul className="cpc-articles-list">
                     {popularArticles.map((article) => (
                       <li key={article.id}>
-                        <div className="ud-article-image">
+                        <div className="cpc-article-image">
                           <img src={article.image} alt="author" />
                         </div>
-                        <div className="ud-article-content">
-                          <h5 className="ud-article-title">
+                        <div className="cpc-article-content">
+                          <h5 className="cpc-article-title">
                             <a href="#">{article.title}</a>
                           </h5>
-                          <p className="ud-article-author">{article.author}</p>
+                          <p className="cpc-article-author">{article.author}</p>
                         </div>
                       </li>
                     ))}
@@ -222,31 +222,31 @@ export default function BlogDetailsPage() {
         </div>
       </section>
 
-      <section className="ud-blog-grids ud-related-articles">
+      <section className="cpc-blog-grids cpc-related-articles">
         <div className="container">
           <div className="row col-lg-12">
-            <div className="ud-related-title">
-              <h2 className="ud-related-articles-title">Related Articles</h2>
+            <div className="cpc-related-title">
+              <h2 className="cpc-related-articles-title">Related Articles</h2>
             </div>
           </div>
           <div className="row">
             {relatedArticles.map((article) => (
               <div key={article.id} className="col-lg-4 col-md-6">
-                <div className="ud-single-blog">
-                  <div className="ud-blog-image">
+                <div className="cpc-single-blog">
+                  <div className="cpc-blog-image">
                     <a href="blog-details.html">
                       <img src={article.image} alt="blog" />
                     </a>
                   </div>
-                  <div className="ud-blog-content">
-                    <span className="ud-blog-date">{article.date}</span>
-                    <h3 className="ud-blog-title">
+                  <div className="cpc-blog-content">
+                    <span className="cpc-blog-date">{article.date}</span>
+                    <h3 className="cpc-blog-title">
                       <a href="blog-details.html">{article.title}</a>
                     </h3>
-                    <p className="ud-blog-desc">{article.description}</p>
+                    <p className="cpc-blog-desc">{article.description}</p>
                   </div>
 
-                  <ul className="ud-blog-tags">
+                  <ul className="cpc-blog-tags">
                     {article.tags.map((tag, index) => (
                       <li key={index}>
                         <a href="#">{tag}</a>

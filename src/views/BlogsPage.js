@@ -6,7 +6,6 @@ import "../assets/css/sidebar.css";
 import "../assets/css/blog.css";
 import "../assets/css/lineicons.css";
 
-// Blog detail object
 const blogDetail = {
   title: "Facing a challenge is kind of a turn-on for an easy rider",
   image: "https://placehold.co/600x400@2x.png",
@@ -16,11 +15,11 @@ const blogDetail = {
   comments: 50,
   views: 35,
   content: (
-    <div className="ud-blog-details-content">
-      <h2 className="ud-blog-details-title">
+    <div className="cpc-blog-details-content">
+      <h2 className="cpc-blog-details-title">
         Blog Title Goes here my good sir...
       </h2>
-      <p className="ud-blog-details-para">
+      <p className="cpc-blog-details-para">
         There's a time and place for everything… including asking for reviews.
         For instance: you should not asking for a review on your checkout page.
         The sole purpose of this page is to guide your customer to complete
@@ -28,7 +27,7 @@ const blogDetail = {
         pared-down possible. You don't want to have any unnecessary elements or
         Call To Actions.
       </p>
-      <p className="ud-blog-details-para">
+      <p className="cpc-blog-details-para">
         There's a time and place for everything… including asking for reviews.
         For instance: you should not asking for a review on your checkout page.
         The sole purpose of this page is to guide your customer to complete
@@ -36,8 +35,8 @@ const blogDetail = {
         pared-down possible. You don't want to have any unnecessary elements or
         Call To Actions.
       </p>
-      <h3 className="ud-blog-details-subtitle">Sea no quidam vulputate</h3>
-      <p className="ud-blog-details-para">
+      <h3 className="cpc-blog-details-subtitle">Sea no quidam vulputate</h3>
+      <p className="cpc-blog-details-para">
         At quo cetero fastidii. Usu ex ornatus corpora sententiae, vocibus
         deleniti ut nec. Ut enim eripuit eligendi est, in iracundia
         signiferumque quo. Sed virtute suavitate suscipiantur ea, dolor this can
@@ -45,15 +44,15 @@ const blogDetail = {
         impedit ne. Erant appareat corrumpit ei vel.
       </p>
 
-      <h3 className="ud-blog-details-subtitle">What is it with your ideas?</h3>
-      <p className="ud-blog-details-para">
+      <h3 className="cpc-blog-details-subtitle">What is it with your ideas?</h3>
+      <p className="cpc-blog-details-para">
         At quo cetero fastidii. Usu ex ornatus corpora sententiae, vocibus
         deleniti ut nec. Ut enim eripuit eligendi est, in iracundia
         signiferumque quo. Sed virtute suavitate suscipiantur ea, dolor this can
         eloquentiam ei pro. Suas adversarium interpretaris eu sit, eum viris
         impedit ne. Erant appareat corrumpit ei vel.
       </p>
-      <p className="ud-blog-details-para">
+      <p className="cpc-blog-details-para">
         At quo cetero fastidii. Usu ex ornatus corpora sententiae, vocibus
         deleniti ut nec. Ut enim eripuit eligendi est, in iracundia
         signiferumque quo. Sed virtute suavitate suscipiantur ea, dolor this can
@@ -65,7 +64,6 @@ const blogDetail = {
   tags: ["Design", "Development", "Info"],
 };
 
-// Related Articles
 const blogs = [
   {
     id: 1,
@@ -105,23 +103,6 @@ const blogs = [
   },
 ];
 
-const carouselItems = [
-  {
-    src: "https://placehold.co/600x400@2x.png",
-    altText: "Slide 1",
-    caption: "Pic One",
-  },
-  {
-    src: "https://placehold.co/600x400@2x.png",
-    altText: "Slide 2",
-    caption: "Pic Two",
-  },
-  {
-    src: "https://placehold.co/600x400@2x.png",
-    altText: "Slide 3",
-    caption: "Pic Three",
-  },
-];
 
 export default function BlogsPage() {
   React.useEffect(() => {
@@ -138,31 +119,31 @@ export default function BlogsPage() {
       <SideBar />
       <img alt="..." className="dots" src={require("assets/img/dots.png")} />
 
-      <section className="ud-blog-grids ud-related-articles">
+      <section className="cpc-blog-grids cpc-related-articles">
         <div className="container">
           <div className="row col-lg-12">
-            <div className="ud-related-title">
-              <h2 className="ud-related-articles-title">Our Blogs</h2>
+            <div className="cpc-related-title">
+              <h2 className="cpc-related-articles-title">Our Blogs</h2>
             </div>
           </div>
           <div className="row">
             {blogs.map((article) => (
               <div key={article.id} className="col-lg-4 col-md-6">
-                <div className="ud-single-blog">
-                  <div className="ud-blog-image">
+                <div className="cpc-single-blog">
+                  <div className="cpc-blog-image">
                     <a href="/blog-details">
                       <img src={article.image} alt="blog" />
                     </a>
                   </div>
-                  <div className="ud-blog-content">
-                    <span className="ud-blog-date">{article.date}</span>
-                    <h3 className="ud-blog-title">
+                  <div className="cpc-blog-content">
+                    <span className="cpc-blog-date">{article.date}</span>
+                    <h3 className="cpc-blog-title">
                       <a href="/blog-details">{article.title}</a>
                     </h3>
-                    <p className="ud-blog-desc">{article.description}</p>
+                    <p className="cpc-blog-desc">{article.description}</p>
                   </div>
 
-                  <ul className="ud-blog-tags">
+                  <ul className="cpc-blog-tags">
                     {article.tags.map((tag, index) => (
                       <li key={index}>
                         <a href="#">{tag}</a>

@@ -42,7 +42,6 @@ export default function HomePage() {
   React.useEffect(() => {
     document.body.classList.toggle("index-page");
 
-    // Specify how to clean up after this effect:
     return function cleanup() {
       document.body.classList.toggle("index-page");
     };
@@ -51,52 +50,52 @@ export default function HomePage() {
     <section class="">
       <SideBar />
       <PageHeader />
-      <div className="container">
-        <AboutUs />
-        <section className="ud-blog-grids ud-related-articles">
-          <div className="container">
-            <div className="row col-lg-12">
-              <div className="ud-related-title">
-                {/* <h2 className="ud-related-articles-title">Related Articles</h2> */}
-                <Container>
-                  <Col md="5">
-                    <h1 className="profile-title text-left">OUR</h1>
-                    <h5 className="text-on-back">Blogs</h5>
-                  </Col>
-                </Container>
-              </div>
-            </div>
-            <div className="row">
-              {blogs.map((article) => (
-                <div key={article.id} className="col-lg-4 col-md-6">
-                  <div className="ud-single-blog">
-                    <div className="ud-blog-image">
-                      <a href="/blog-details">
-                        <img src={article.image} alt="blog" />
-                      </a>
-                    </div>
-                    <div className="ud-blog-content">
-                      <span className="ud-blog-date">{article.date}</span>
-                      <h3 className="ud-blog-title">
-                        <a href="/blog-details">{article.title}</a>
-                      </h3>
-                      <p className="ud-blog-desc">{article.description}</p>
-                    </div>
 
-                    <ul className="ud-blog-tags">
-                      {article.tags.map((tag, index) => (
-                        <li key={index}>
-                          <a href="#">{tag}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
+      <AboutUs />
+      <section className="cpc-blog-grids cpc-related-articles">
+        <div className="container">
+          <div className="row col-lg-12">
+            <div className="cpc-related-title">
+              <Container>
+                <Col md="5">
+                  <h1 className="profile-title text-left">OUR</h1>
+                  <h5 className="text-on-back">Blogs</h5>
+                </Col>
+              </Container>
             </div>
           </div>
-        </section>
-        <div class="ud-blog-quote">
+          <div className="row">
+            {blogs.map((article) => (
+              <div key={article.id} className="col-lg-4 col-md-6">
+                <div className="cpc-single-blog">
+                  <div className="cpc-blog-image">
+                    <a href="/blog-details">
+                      <img src={article.image} alt="blog" />
+                    </a>
+                  </div>
+                  <div className="cpc-blog-content">
+                    <span className="cpc-blog-date">{article.date}</span>
+                    <h3 className="cpc-blog-title">
+                      <a href="/blog-details">{article.title}</a>
+                    </h3>
+                    <p className="cpc-blog-desc">{article.description}</p>
+                  </div>
+
+                  <ul className="cpc-blog-tags">
+                    {article.tags.map((tag, index) => (
+                      <li key={index}>
+                        <a href="#">{tag}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <div className="container">
+        <div class="cpc-blog-quote">
           <i class="lni lni-quotation"></i>
           <p>
             “My CP skils are just like my GF. Imaginary” <br />
@@ -104,7 +103,7 @@ export default function HomePage() {
           <h6>-Drunk Guy</h6>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </section>
   );
 }

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-// reactstrap components
+
 import {
   Button,
   NavItem,
@@ -32,8 +32,7 @@ export default function Footer() {
             </Nav>
           </Col> */}
          
-          <Col md="3">
-            <h3 className="title">Follow us:</h3>
+          <Col md="3" className="align-items-center d-flex">
             <div className="btn-wrapper profile">
               <Button
                 className="btn-icon btn-neutral btn-round btn-simple"

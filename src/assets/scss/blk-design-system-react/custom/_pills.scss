@@ -4,9 +4,10 @@
     margin-bottom: 15px;
   }
 
-  &.nav-pills:not(.flex-column) .nav-item:not(:last-child) .nav-link {
-    margin-right: 10px;
-    margin-bottom: 5px;
+//   &.nav-pills:not(.flex-column) .nav-item:not(:last-child) .nav-link {
+    &.nav-pills:not(.flex-column) .nav-link {
+    margin: 10px;
+    // margin-bottom: 5px;
   }
 
   &:not(.nav-pills-icons):not(.nav-pills-just-icons) .nav-item .nav-link {

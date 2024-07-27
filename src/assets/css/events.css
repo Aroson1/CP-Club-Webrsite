@@ -1,0 +1,129 @@
+:root {
+  --stack-ic-color-primary-hsl: 250, 84%, 54%;
+  --stack-ic-color-bg-hsl: 0, 0%, 100%;
+  --stack-ic-color-contrast-high-hsl: 230, 7%, 23%;
+  --stack-ic-color-contrast-higher-hsl: 230, 13%, 9%;
+  --stack-ic-color-bg-light-hsl: 0, 0%, 100%;
+
+  --stack-ic-space-sm: 0.75rem;
+  --stack-ic-space-md: 5rem;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --stack-ic-space-sm: 1.125rem;
+    --stack-ic-space-md: 2rem;
+  }
+}
+
+.stack-cards {
+  --stack-cards-gap: var(--stack-ic-space-sm);
+  --stack-cards-item-ratio: 2/1;
+}
+
+.stack-cards__item {
+  position: relative;
+  position: -webkit-sticky;
+  position: sticky;
+  top: var(--stack-ic-space-md);
+  height: 0;
+  padding-bottom: calc(100% / (var(--stack-cards-item-ratio)));
+  -webkit-transform-origin: center top;
+  transform-origin: center top;
+  cursor: pointer;
+}
+.stack-cards__item > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.stack-ic-overflow-hidden {
+  overflow: hidden;
+}
+
+.stack-ic-shadow-md {
+  box-shadow: 0 0.9px 1.5px rgba(0, 0, 0, 0.03),
+    0 3.1px 5.5px rgba(0, 0, 0, 0.08), 0 14px 25px rgba(0, 0, 0, 0.12);
+}
+
+.stack-ic-radius-lg {
+  border-radius: 0.5em;
+}
+
+.stack-ic-bg {
+  --stack-ic-bg-o: 1;
+  background-color: hsla(var(--stack-ic-color-bg-hsl), var(--stack-ic-bg-o, 1));
+}
+
+.stack-ic-flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.stack-ic-flex {
+  display: flex;
+}
+
+:where(.stack-ic-inner-glow) {
+  position: relative;
+}
+
+.stack-ic-inner-glow::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.075);
+}
+
+.stack-ic-bg-light {
+  --stack-ic-bg-o: 1;
+  background-color: hsla(var(--stack-ic-color-bg-light-hsl), var(--stack-ic-bg-o, 1));
+}
+
+.title-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border-radius: 5px;
+  padding: 30px;
+}
+
+.title-overlay h3 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 768px) {
+  .title-overlay h3 {
+    font-size: 16px;
+  }
+  .title-overlay {
+    align-items: flex-end;
+    width: 100%;
+    z-index: 10;
+  }
+}
+
+@media (max-width: 991px){
+  .title-overlay h3 {
+    font-size: 17px;
+  }
+}

@@ -12925,7 +12925,7 @@ fieldset[disabled] .btn-link.active {
   }
 }
 .footer {
-  padding: 50px 0;
+  padding: 0px 0;
   border-top: 2px solid #435db5;
   background: radial-gradient(ellipse at bottom, #292d61 30%, #171941 80%);
 }
