@@ -84,7 +84,7 @@ export default function LeaderboardPage() {
       constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
     },
     batch: {
-      operator: FilterOperator.OR,
+      operator: FilterOperator.AND,
       constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
     },
   });
@@ -237,6 +237,7 @@ export default function LeaderboardPage() {
           filterField="points"
           style={{ minWidth: "14rem" }}
           filter
+          dataType="numeric"
           filterElement={(options) => (
             <InputNumber
               value={options.value}
@@ -251,6 +252,7 @@ export default function LeaderboardPage() {
           header="Batch"
           sortable
           filterField="batch"
+          dataType="numeric"
           style={{ minWidth: "14rem" }}
           body={batchBodyTemplate}
           filter
