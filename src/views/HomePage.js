@@ -100,7 +100,7 @@ export default function HomePage() {
           <p>
             “My CP skils are just like my GF. Imaginary” <br />
           </p>
-          <h6>-Drunk Guy</h6>
+          <h6>- Vipin Karthic</h6>
         </div>
       </div>
       <Footer />
