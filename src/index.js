@@ -44,7 +44,7 @@ ReactDOM.render(
           <Route path="/events" element={<EventsPage />} />
           <Route path="/hall-of-fame" element={<HallOfFamePage />} />
           {userData && <Route path="/profile" element={<ProfilePage />} />}
-          {userData && userData.role === "ADMIN" && (
+          {userData && JSON.parse(userData).role === "ADMIN" && (
             <Route path="/admin" element={<AdminPage />} />
           )}
           <Route path="*" element={<Navigate to="/" replace />} />
