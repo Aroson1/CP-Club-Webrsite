@@ -47,9 +47,9 @@
                 &,
                 &:focus,
                 &:hover{
-                    background-color: $dark-gray;
+                    // background-color: $dark-gray;
                     color: $white;
-                    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+                    // box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
                 }
             }
 
@@ -100,7 +100,7 @@
     &.nav-pills-info{
         .nav-item {
             .nav-link.active{
-                &,
+                // &,
                 &:focus,
                 &:hover{
                     @include diagonal-gradient($info, $info-states);

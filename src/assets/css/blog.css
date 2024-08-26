@@ -1,3 +1,95 @@
+/* ====== TOC CSS ====== */
+.toc {
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+  transition: all 0.3s ease;
+}
+
+.cpc-blog-sidebar {
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+}
+
+.toc-list-item {
+  margin-bottom: 10px;
+}
+
+.toc-link {
+  text-decoration: none;
+  color: #0277bd; 
+}
+
+.toc-link.is-active-link {
+  font-weight: bold;
+  color: #01579b; 
+}
+
+.is-collapsible > ul {
+  padding-left: 20px;
+}
+
+.is-collapsed > ul {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .toc {
+    display: none;
+  }
+}
+@media (max-width: 991px) {
+  .cpc-blog-sidebar {
+    display: none;
+  }
+}
+.toc-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.toc-list-item {
+  margin-bottom: 10px;
+}
+
+.toc-link {
+  color: #333;
+  text-decoration: none;
+}
+
+.is-active-link {
+  font-weight: 700;
+  color: #007bff;
+}
+
+.toc-link::before {
+  display: inline-block;
+  content: "";
+  border-left: 1px solid #007bff;
+  height: 0.8em;
+  margin-right: 0.5em;
+}
+
+.is-active-link::before {
+  background-color: #007bff;
+}
+
+.toc-list-item ul {
+  padding-left: 20px;
+}
+
+.custom-ordered-list {
+  padding-left: 20px;
+}
+
+.custom-list-item {
+  margin-bottom: 10px;
+}
+
 /* ====== Blog CSS ====== */
 .cpc-blog-grids {
   padding-top: 120px;
@@ -41,16 +133,16 @@
 }
 
 .cpc-single-blog .cpc-blog-date {
-  display: -webkit-inline-box;
+  /* display: -webkit-inline-box;
   display: -ms-inline-flexbox;
-  display: inline-flex;
+  display: inline-flex; */
   font-size: 12px;
   font-weight: 600;
   padding: 8px 16px;
   background: var(--primary-color);
   color: var(--white);
   border-radius: 5px;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .cpc-single-blog .cpc-blog-title {
@@ -97,7 +189,7 @@
   left: 0;
   bottom: 0;
 }
-.blue-line{
+.blue-line {
   content: "hello";
   position: absolute;
   width: 80px;
@@ -482,11 +574,11 @@
 }
 
 .cpc-blog-share-links a.facebook {
-  background: #C13584;
+  background: #c13584;
 }
 
 .cpc-blog-share-links a.facebook:hover {
-  background: #E1306C;
+  background: #e1306c;
 }
 
 .cpc-blog-share-links a.twitter {

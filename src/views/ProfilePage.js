@@ -1,48 +1,46 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classnames from "classnames";
-// reactstrap components
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
-  CardImg,
   CardTitle,
-  Label,
   FormGroup,
-  Form,
   Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Container,
   Row,
   Col,
 } from "reactstrap";
 import Sidebar from "components/Navbars/SideBar";
 import { Toast } from "primereact/toast";
-import { InputText } from "primereact/inputtext";
-import { FileUpload } from "primereact/fileupload";
-import { Tooltip } from "primereact/tooltip";
-import { classNames } from "primereact/utils";
-
+import apiService from "../apiService";
 export default function RegisterPage() {
   const [squares1to6, setSquares1to6] = useState("");
   const [squares7and8, setSquares7and8] = useState("");
-  const [fullNameFocus, setFullNameFocus] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
 
   const [profileImage, setProfileImage] = useState(null);
-  const [name, setName] = useState("John Doe"); // Static name for example
-  const [rollNumber, setRollNumber] = useState("2023BCS0023"); // Static roll number for example
+  const [name, setName] = useState("");
+  const [rollNumber, setRollNumber] = useState("");
   const [codeforcesVerified, setCodeforcesVerified] = useState(false);
   const [linkedin, setLinkedin] = useState("");
   const [github, setGithub] = useState("");
   const [codechef, setCodechef] = useState("");
   const [leetcode, setLeetcode] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const toast = useRef(null);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    if (userData) {
+      setName(userData.userName);
+      setRollNumber(userData.rollNumber);
+      setProfileImage(userData.profileImage);
+
+      fetchUserDetails(userData.id);
+    }
+  }, []);
 
   useEffect(() => {
     document.body.classList.toggle("register-page");
@@ -72,23 +70,86 @@ export default function RegisterPage() {
     );
   };
 
-  const handleSaveChanges = () => {
+  const fetchUserDetails = async (userId) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await apiService.get(`/v1/user-details/user/${userId}`);
+      const userDetails = response;
+
+      if (userDetails) {
+        setLinkedin(userDetails.linkedIn || "");
+        setGithub(userDetails.github || "");
+        setCodeforcesVerified(userDetails.verified || false);
+        setCodechef(userDetails.codechef || "");
+        setLeetcode(userDetails.leetcode || "");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("An error occurred while fetching user details.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveChanges = async () => {
     const changesMade = linkedin || github || codechef || leetcode;
 
-    if (changesMade) {
-      toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Changes saved successfully",
-      });
-    } else {
+    if (!changesMade) {
       toast.current.show({
         severity: "info",
         summary: "Info",
         detail: "No changes made",
       });
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    const userData = JSON.parse(localStorage.getItem("userData"));
+
+    try {
+      const response = await apiService.put(
+        `/v1/user-details/user/${userData.id}`,
+        {
+          userId: userData.id,
+          linkedIn: linkedin,
+          github: github,
+          codeforces: "",
+          codechef: codechef,
+          leetcode: leetcode,
+          verified: codeforcesVerified,
+        }
+      );
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Changes saved successfully",
+      });
+    } catch (err) {
+      console.error(err);
+      setError("An error occurred while saving changes.");
+    } finally {
+      setLoading(false);
     }
   };
+
+  const handleLogOut = () => {
+    localStorage.removeItem("userData");
+    window.location.href = "/";
+  };
+
+  useEffect(() => {
+    if (error && toast.current) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error,
+        life: 3000,
+      });
+    }
+  }, [error]);
 
   return (
     <>
@@ -120,11 +181,11 @@ export default function RegisterPage() {
                       User Profile
                     </CardTitle>
                     <div className="text-center position-relative mb-3">
-                      <CardImg
+                      <img
                         top
                         src={
                           profileImage
-                            ? URL.createObjectURL(profileImage)
+                            ? profileImage
                             : "https://via.placeholder.com/150"
                         }
                         alt="Profile Image"
@@ -134,16 +195,6 @@ export default function RegisterPage() {
                           height: "auto",
                           maxWidth: "150px",
                         }}
-                      />
-                      <FileUpload
-                        mode="basic"
-                        accept="image/*"
-                        customUpload
-                        auto
-                        onSelect={(e) => setProfileImage(e.files[0])}
-                        className="position-absolute p-button-rounded p-button-info p-button-sm"
-                        style={{ bottom: 0, right: 0 }}
-                        chooseLabel="Upload"
                       />
                     </div>
                     <div className="text-center mb-3">
@@ -207,11 +258,28 @@ export default function RegisterPage() {
                         placeholder="https://leetcode.com/yourusername"
                       />
                     </FormGroup>
-                    <FormGroup className="mt-auto">
-                      <Button color="primary" onClick={handleSaveChanges} block>
-                        Save Changes
-                      </Button>
-                    </FormGroup>
+                    <Row>
+                      <FormGroup className="mt-auto">
+                        <Button
+                          color="primary"
+                          onClick={handleSaveChanges}
+                          block
+                          disabled={loading}
+                        >
+                          {loading ? "Saving..." : "Save Changes"}
+                        </Button>
+                      </FormGroup>
+                      <FormGroup className="mt-auto">
+                        <Button
+                          color="blue"
+                          onClick={handleLogOut}
+                          block
+                          disabled={loading}
+                        >
+                          {loading ? "Logging Out..." : "Log Out"}
+                        </Button>
+                      </FormGroup>
+                    </Row>
                   </CardBody>
                 </Card>
               </Col>

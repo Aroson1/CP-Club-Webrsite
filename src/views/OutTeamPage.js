@@ -11,44 +11,23 @@ const membersList = [
   {
     name: "Vibhaas The Guy",
     role: "CP Expert",
-    image: "https://placehold.it/300x300",
-    socials: [
-      { name: "Facebook", link: "https://twitter.com/" },
-      { name: "Twitter", link: "https://twitter.com/" },
-      { name: "Instagram", link: "https://twitter.com/" },
-    ],
+    image: "https://placehold.co/400",
   },
   {
     name: "Shuxn The Guy",
     role: "Web Developer",
-    image: "https://placehold.it/300x300",
-    socials: [
-      { name: "Facebook", link: "https://twitter.com/" },
-      { name: "Twitter", link: "https://twitter.com/" },
-      { name: "Instagram", link: "https://twitter.com/" },
-    ],
+    image: "https://placehold.co/400",
   },
   {
     name: "Pevan The Guy",
     role: "Pevan",
-    image: "https://placehold.it/300x300",
-    socials: [
-      { name: "Facebook", link: "https://twitter.com/" },
-      { name: "Twitter", link: "https://twitter.com/" },
-      { name: "Instagram", link: "https://twitter.com/" },
-    ],
+    image: "https://placehold.co/400",
   },
   {
     name: "VPN The Guy",
     role: "Alon Muskmelon",
-    image: "https://placehold.it/300x300",
-    socials: [
-      { name: "Facebook", link: "https://twitter.com/" },
-      { name: "Twitter", link: "https://twitter.com/" },
-      { name: "Instagram", link: "https://twitter.com/" },
-    ],
+    image: "https://placehold.co/400",
   },
-
 ];
 
 export default function OurTeamPage() {
@@ -81,10 +60,7 @@ export default function OurTeamPage() {
 
           <div class="row">
             {membersList.map((member, index) => (
-              <div
-                class="col-xl-3 col-lg-3 col-sm-6"
-                key={`member-${index}`}
-              >
+              <div class="col-xl-3 col-lg-3 col-sm-6" key={`member-${index}`}>
                 <div
                   class="cpc-single-team wow fadeInUp"
                   data-wow-delay={`${index * 0.05}s`}
@@ -101,15 +77,6 @@ export default function OurTeamPage() {
                     <h5>{member.name}</h5>
                     <h6>{member.role}</h6>
                   </div>
-                  <ul class="cpc-team-socials">
-                    {member.socials.map((social, index) => (
-                      <li key={`social-${index}`}>
-                        <a href={social.link}>
-                          <i class={`lni lni-${social.name.toLowerCase()}-filled`}></i>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </div>
             ))}

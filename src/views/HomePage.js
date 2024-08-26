@@ -1,57 +1,64 @@
-import React from "react";
-
+import React, { useState, useEffect, useRef } from "react";
 import PageHeader from "components/PageHeader/PageHeader.js";
 import AboutUs from "components/AboutUs.js";
 import SideBar from "components/Navbars/SideBar.js";
-
 import { Container, Col } from "reactstrap";
-
+import BlogCard from "components/BlogCard";
+import { Toast } from "primereact/toast";
+import apiService from "../apiService";
 import "../assets/css/splash.css";
 import "../assets/css/sidebar.css";
 import Footer from "components/Footer/Footer";
-const blogs = [
-  {
-    id: 1,
-    title: "Meet AutoManage, the best AI management tools",
-    date: "Dec 22, 2023",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "https://placehold.co/600x400@2x.png",
-    tags: ["Design", "Development", "Info"],
-  },
-  {
-    id: 2,
-    title: "How to earn more money as a wellness coach",
-    date: "Dec 22, 2023",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "https://placehold.co/600x400@2x.png",
-    tags: ["Design", "Development", "Info"],
-  },
-  {
-    id: 3,
-    title: "The no-fuss guide to upselling and cross selling",
-    date: "Dec 22, 2023",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "https://placehold.co/600x400@2x.png",
-    tags: ["Design", "Development", "Info"],
-  },
-];
+
 export default function HomePage() {
-  React.useEffect(() => {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const toast = useRef(null);
+
+  const fetchBlogs = async () => {
+    setLoading(true);
+    try {
+      const response = await apiService.get("/v1/blogs", {
+        page: 1,
+        limit: 3,
+      });
+      setBlogs(response.blogs || []);
+    } catch (err) {
+      console.error(err);
+      setError("An error occurred while fetching blogs.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     document.body.classList.toggle("index-page");
+    fetchBlogs();
 
     return function cleanup() {
       document.body.classList.toggle("index-page");
     };
   }, []);
+
+  useEffect(() => {
+    if (error && toast.current) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error,
+        life: 3000,
+      });
+    }
+  }, [error]);
+
   return (
-    <section class="">
+    <section className="">
       <SideBar />
       <PageHeader />
-
       <AboutUs />
+      <Toast ref={toast} />
+
       <section className="cpc-blog-grids cpc-related-articles">
         <div className="container">
           <div className="row col-lg-12">
@@ -65,40 +72,33 @@ export default function HomePage() {
             </div>
           </div>
           <div className="row">
-            {blogs.map((article) => (
-              <div key={article.id} className="col-lg-4 col-md-6">
-                <div className="cpc-single-blog">
-                  <div className="cpc-blog-image">
-                    <a href="/blog-details">
-                      <img src={article.image} alt="blog" />
-                    </a>
-                  </div>
-                  <div className="cpc-blog-content">
-                    <span className="cpc-blog-date">{article.date}</span>
-                    <h3 className="cpc-blog-title">
-                      <a href="/blog-details">{article.title}</a>
-                    </h3>
-                    <p className="cpc-blog-desc">{article.description}</p>
-                  </div>
-
-                  <ul className="cpc-blog-tags">
-                    {article.tags.map((tag, index) => (
-                      <li key={index}>
-                        <a href="#">{tag}</a>
-                      </li>
-                    ))}
-                  </ul>
+            {loading ? (
+              <div className="d-flex justify-content-center align-items-center w-100">
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
                 </div>
               </div>
-            ))}
+            ) : error ? (
+              <div className="d-flex justify-content-center align-items-center w-100">
+                <p>{error}</p>
+              </div>
+            ) : blogs.length === 0 ? (
+              <div className="d-flex justify-content-center align-items-center w-100">
+                <p>No blogs available.</p>
+              </div>
+            ) : (
+              blogs.map((article, index) => (
+                <BlogCard key={index} article={article} searchTerm={""} />
+              ))
+            )}
           </div>
         </div>
       </section>
       <div className="container">
-        <div class="cpc-blog-quote">
-          <i class="lni lni-quotation"></i>
+        <div className="cpc-blog-quote">
+          <i className="lni lni-quotation"></i>
           <p>
-            “My CP skils are just like my GF. Imaginary” <br />
+            “My CP skills are just like my GF. Imaginary” <br />
           </p>
           <h6>- Vipin Karthic</h6>
         </div>

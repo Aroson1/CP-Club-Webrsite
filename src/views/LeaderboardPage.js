@@ -1,6 +1,6 @@
 import React from "react";
 import SideBar from "components/Navbars/SideBar.js";
-import LeaderboardPage from "components/Leaderboard";
+import Leaderboard from "components/Leaderboard/Leaderboard";
 import "../assets/css/sidebar.css";
 
 export default function BlogsPage() {
@@ -30,7 +30,7 @@ export default function BlogsPage() {
               </div>
             </div>
           </div>
-        <LeaderboardPage />
+        <Leaderboard />
         </div>
       </section>
     </section>

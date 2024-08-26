@@ -1,160 +1,128 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SideBar from "components/Navbars/SideBar.js";
-import { Button, Col, Container, Row, UncontrolledCarousel } from "reactstrap";
-
-import "../assets/css/sidebar.css";
-import "../assets/css/blog.css";
-import "../assets/css/lineicons.css";
-
-const blogDetail = {
-  title: "Facing a challenge is kind of a turn-on for an easy rider",
-  image: "https://placehold.co/600x400@2x.png",
-  authorImage: "https://placehold.co/600x400@2x.png",
-  authorName: "Samuyl Joshi",
-  date: "25 Jul 2024",
-  comments: 50,
-  views: 35,
-  content: (
-    <div className="cpc-blog-details-content">
-      <h2 className="cpc-blog-details-title">
-        Blog Title Goes here my good sir...
-      </h2>
-      <p className="cpc-blog-details-para">
-        There's a time and place for everything… including asking for reviews.
-        For instance: you should not asking for a review on your checkout page.
-        The sole purpose of this page is to guide your customer to complete
-        their purchase, and this means that the page should be as minimalist and
-        pared-down possible. You don't want to have any unnecessary elements or
-        Call To Actions.
-      </p>
-      <p className="cpc-blog-details-para">
-        There's a time and place for everything… including asking for reviews.
-        For instance: you should not asking for a review on your checkout page.
-        The sole purpose of this page is to guide your customer to complete
-        their purchase, and this means that the page should be as minimalist and
-        pared-down possible. You don't want to have any unnecessary elements or
-        Call To Actions.
-      </p>
-      <h3 className="cpc-blog-details-subtitle">Sea no quidam vulputate</h3>
-      <p className="cpc-blog-details-para">
-        At quo cetero fastidii. Usu ex ornatus corpora sententiae, vocibus
-        deleniti ut nec. Ut enim eripuit eligendi est, in iracundia
-        signiferumque quo. Sed virtute suavitate suscipiantur ea, dolor this can
-        eloquentiam ei pro. Suas adversarium interpretaris eu sit, eum viris
-        impedit ne. Erant appareat corrumpit ei vel.
-      </p>
-
-      <h3 className="cpc-blog-details-subtitle">What is it with your ideas?</h3>
-      <p className="cpc-blog-details-para">
-        At quo cetero fastidii. Usu ex ornatus corpora sententiae, vocibus
-        deleniti ut nec. Ut enim eripuit eligendi est, in iracundia
-        signiferumque quo. Sed virtute suavitate suscipiantur ea, dolor this can
-        eloquentiam ei pro. Suas adversarium interpretaris eu sit, eum viris
-        impedit ne. Erant appareat corrumpit ei vel.
-      </p>
-      <p className="cpc-blog-details-para">
-        At quo cetero fastidii. Usu ex ornatus corpora sententiae, vocibus
-        deleniti ut nec. Ut enim eripuit eligendi est, in iracundia
-        signiferumque quo. Sed virtute suavitate suscipiantur ea, dolor this can
-        eloquentiam ei pro. Suas adversarium interpretaris eu sit, eum viris
-        impedit ne. Erant appareat corrumpit ei vel.
-      </p>
-    </div>
-  ),
-  tags: ["Design", "Development", "Info"],
-};
-
-const blogs = [
-  {
-    id: 1,
-    title: "Meet AutoManage, the best AI management tools",
-    date: "Dec 22, 2023",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "https://placehold.co/600x400@2x.png",
-    tags: ["Design", "Development", "Info"],
-  },
-  {
-    id: 2,
-    title: "How to earn more money as a wellness coach",
-    date: "Dec 22, 2023",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "https://placehold.co/600x400@2x.png",
-    tags: ["Design", "Development", "Info"],
-  },
-  {
-    id: 3,
-    title: "The no-fuss guide to upselling and cross selling",
-    date: "Dec 22, 2023",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "https://placehold.co/600x400@2x.png",
-    tags: ["Design", "Development", "Info"],
-  },
-  {
-    id: 4,
-    title: "The no-fuss guide to upselling and cross selling",
-    date: "Dec 22, 2023",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "https://placehold.co/600x400@2x.png",
-    tags: ["Design", "Development", "Info"],
-  },
-];
-
+import { Container, Row } from "reactstrap";
+import { InputText } from "primereact/inputtext";
+import { Paginator } from "primereact/paginator";
+import { Toast } from "primereact/toast";
+import apiService from "../apiService";
+import BlogCard from "components/BlogCard"; 
+import "assets/css/sidebar.css";
+import "assets/css/blog.css";
+import "assets/css/lineicons.css";
+import "primereact/resources/themes/saga-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 
 export default function BlogsPage() {
-  React.useEffect(() => {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(6);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const toast = React.useRef(null);
+
+  const fetchBlogs = async (page, limit) => {
+    setLoading(true);
+    try {
+      const response = await apiService.get("/v1/blogs", {
+        page,
+        limit,
+      });
+      setBlogs(response.blogs);
+      setTotalRecords(response.count);
+    } catch (err) {
+      console.error(err);
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "An error occurred. Please report to dev.",
+        life: 3000,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     document.body.classList.toggle("index-page");
     document.body.classList.toggle("profile-page");
+
+    fetchBlogs(1, rows);
 
     return function cleanup() {
       document.body.classList.toggle("index-page");
     };
-  }, []);
+  }, [rows]);
+
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    fetchBlogs(event.page + 1, event.rows);
+  };
+
+  const filteredBlogs = blogs.filter((blog) =>
+    blog.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <section className="">
       <SideBar />
       <img alt="..." className="dots" src={require("assets/img/dots.png")} />
+      <Toast ref={toast} />
 
       <section className="cpc-blog-grids cpc-related-articles">
-        <div className="container">
-          <div className="row col-lg-12">
+        <Container>
+          <Row className="col-lg-12">
             <div className="cpc-related-title">
               <h2 className="cpc-related-articles-title">Our Blogs</h2>
             </div>
-          </div>
-          <div className="row">
-            {blogs.map((article) => (
-              <div key={article.id} className="col-lg-4 col-md-6">
-                <div className="cpc-single-blog">
-                  <div className="cpc-blog-image">
-                    <a href="/blog-details">
-                      <img src={article.image} alt="blog" />
-                    </a>
-                  </div>
-                  <div className="cpc-blog-content">
-                    <span className="cpc-blog-date">{article.date}</span>
-                    <h3 className="cpc-blog-title">
-                      <a href="/blog-details">{article.title}</a>
-                    </h3>
-                    <p className="cpc-blog-desc">{article.description}</p>
-                  </div>
-
-                  <ul className="cpc-blog-tags">
-                    {article.tags.map((tag, index) => (
-                      <li key={index}>
-                        <a href="#">{tag}</a>
-                      </li>
-                    ))}
-                  </ul>
+          </Row>
+          <Row className="mb-3">
+            <div className="col-lg-4 ml-auto">
+              <span className="p-input-icon-left w-100">
+                <i
+                  className="pi pi-search"
+                  style={{ left: "0.75rem", top: "50%", marginTop: "-0.5rem" }}
+                />
+                <InputText
+                  placeholder="Search blog on this page"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-100 pl-5"
+                  style={{ paddingLeft: "2.5rem" }}
+                />
+              </span>
+            </div>
+          </Row>
+          <Row>
+            {loading ? (
+              <div className="d-flex justify-content-center align-items-center w-100">
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+            ) : filteredBlogs.length > 0 ? (
+              filteredBlogs.map((article, index) => (
+                <BlogCard key={index} article={article} searchTerm={searchTerm} />
+              ))
+            ) : (
+              <div className="col-12 text-center">
+                <p>No blogs to display</p>
+              </div>
+            )}
+          </Row>
+          <Row className="mt-3">
+            <Paginator
+              first={first}
+              rows={rows}
+              totalRecords={totalRecords}
+              onPageChange={onPageChange}
+              template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            />
+          </Row>
+        </Container>
       </section>
     </section>
   );

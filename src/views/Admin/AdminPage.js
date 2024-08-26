@@ -5,7 +5,12 @@ import { NavItem, NavLink, Nav } from "reactstrap";
 import "../../assets/css/sidebar.css";
 import "../../assets/css/admin.css";
 import "../../assets/css/lineicons.css";
-
+import ManageBlogs from "../../components/Admin/ManageBlogs";
+import ManageEvents from "../../components/Admin/ManageEvents";
+import ManageResources from "components/Admin/ManageResources";
+import ManageMembers from "components/Admin/ManageMembers";
+import ManageLeaderboard from "components/Admin/ManageLeaderboard";
+import ManangeHallOfFame from "components/Admin/ManageHallOfFame";
 const options = [
   {
     title: "Manage Members",
@@ -40,24 +45,36 @@ const options = [
 ];
 
 const getTabIndex = (tabName) => {
-    const option = options.find((option) => option.link.includes(tabName));
-    return option ? options.indexOf(option) + 1 : 1;
+  const option = options.find((option) => option.link.includes(tabName));
+  return option ? options.indexOf(option) + 1 : null;
 };
 
 export default function AdminPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const tab = urlParams.get("tab");
-  const [pills, setPills] = React.useState(1);
+  const [pills, setPills] = React.useState(tab ? getTabIndex(tab) : null);
+  // const [showOptions, setShowOptions] = React.useState(true);
+
   React.useEffect(() => {
     document.body.classList.toggle("index-page");
     document.body.classList.toggle("profile-page");
 
-    setPills(getTabIndex(tab));
+    setPills(tab ? getTabIndex(tab) : null);
 
     return function cleanup() {
       document.body.classList.toggle("index-page");
     };
-  }, []);
+  }, [tab]);
+
+  const handleOptionClick = (index) => {
+    setPills(index);
+    // setShowOptions(false);
+  };
+
+  const handleBackClick = () => {
+    // setShowOptions(true);
+    setPills(null);
+  };
 
   return (
     <section className="">
@@ -74,31 +91,51 @@ export default function AdminPage() {
               </div>
             </div>
           </div>
-          <div className="container animation-container">
-            <Nav
-              className="nav-pills-info nav-pills-icons justify-content-center animation-container"
-              pills
-            >
-              {options.map((option, index) => (
-                <NavItem key={index} className="slide-transition">
-                  <NavLink
-                    className={classnames({
-                      "active show": pills === index + 1,
-                      "": true,
-                    })}
-                    onClick={(e) => setPills(index + 1)}
-                    href="#no-aboz-plz"
-                    style={{
-                      width: "200px",
-                    }}
-                  >
-                    <i className={option.icon} />
-                    {option.title}
-                  </NavLink>
-                </NavItem>
-              ))}
-            </Nav>
-          </div>
+          {
+            (pills == null && (
+              <div className="container animation-container">
+                <Nav
+                  className="nav-pills-info nav-pills-icons justify-content-center animation-container"
+                  pills
+                >
+                  {options.map((option, index) => (
+                    <NavItem key={index} className="slide-transition">
+                      <NavLink
+                        className={classnames({
+                          "active show": true,
+                        })}
+                        onClick={() => handleOptionClick(index + 1)}
+                        href="#no-aboz-plz"
+                        style={{
+                          width: "200px",
+                        }}
+                      >
+                        <i className={option.icon} />
+                        {option.title}
+                      </NavLink>
+                    </NavItem>
+                  ))}
+                </Nav>
+              </div>
+            ))
+          }
+          {pills != null && (
+            <div>
+              <p
+                onClick={handleBackClick}
+                style={{ cursor: "pointer", marginBottom: "20px" }}
+              >
+                <i className="tim-icons icon-minimal-left" />
+                Back
+              </p>
+              {pills === 1 && <ManageMembers />}
+              {pills === 2 && <ManageLeaderboard />}
+              {pills === 3 && <ManageResources />}
+              {pills === 4 && <ManageBlogs />}
+              {pills === 5 && <ManageEvents />}
+              {pills === 6 && <ManangeHallOfFame />}
+            </div>
+          )}
         </div>
       </section>
     </section>
