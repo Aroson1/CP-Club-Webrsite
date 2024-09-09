@@ -1,7 +1,6 @@
-
-import React from "react";
 import { Link } from "react-router-dom";
 
+import React, { useState, useEffect } from "react";
 import {
   Button,
   NavItem,
@@ -14,25 +13,50 @@ import {
 } from "reactstrap";
 
 export default function Footer() {
+  const [isMobileView, setIsMobileView] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <footer className="footer">
+    <footer className="footer" style={{ textAlign: "center" }}>
       <Container>
         <Row className="justify-content-between">
-          <Col md="4">
+          <Col
+            md="4"
+            className="align-items-center justify-content-center d-flex"
+          >
             <h1 className="title">CP CLUB • IIITK</h1>
           </Col>
-          {/* <Col md="3">
-            <Nav>
-              <NavItem>
-                <NavLink to="/" tag={Link}>
-                  Hi there i am dumb dumb
+          <Col md="3">
+            <Nav style={{ paddingTop: isMobileView ? 0 : "" }}>
+              <NavItem className="align-items-center  d-flex">
+                <NavLink
+                  to="https://github.com/Aroson1"
+                  tag={Link}
+                  style={{ "text-transform": "inherit", cursor: "pointer" }}
+                >
+                  Developed between snack breaks and existential crises by{" "}
+                  <a href="https://github.com/Aroson1">Alex Gijo</a>
                 </NavLink>
               </NavItem>
-              
             </Nav>
-          </Col> */}
-         
-          <Col md="3" className="align-items-center d-flex">
+          </Col>
+
+          <Col
+            md="3"
+            className="align-items-center justify-content-center d-flex"
+          >
             <div className="btn-wrapper profile">
               <Button
                 className="btn-icon btn-neutral btn-round btn-simple"

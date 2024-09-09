@@ -53,7 +53,7 @@ export default function HomePage() {
   }, [error]);
 
   return (
-    <section className="">
+    <section className="" style={{overflowX: "hidden"}}>
       <SideBar />
       <PageHeader />
       <AboutUs />
