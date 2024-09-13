@@ -1,5 +1,21 @@
 import React from "react";
 
+/**
+ * BlogCard component displays a single blog article with its details.
+ *
+ * @component
+ * @param {Object} props - The properties passed to the component.
+ * @param {Object} props.article - The article object containing details of the blog.
+ * @param {string} props.article.id - The unique identifier for the article.
+ * @param {string} props.article.image - The URL of the article's image.
+ * @param {string} props.article.date - The publication date of the article.
+ * @param {string} props.article.authorName - The name of the article's author.
+ * @param {string} props.article.title - The title of the article.
+ * @param {Array<string>} props.article.tags - An array of tags associated with the article.
+ * @param {string} props.searchTerm - The term used for highlighting in the article title.
+ *
+ * @returns {JSX.Element} The rendered BlogCard component.
+ */
 const BlogCard = ({ article, searchTerm }) => {
   return (
     <div className="col-lg-4 col-md-6">

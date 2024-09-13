@@ -10,6 +10,41 @@ import { Dialog } from "primereact/dialog";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import apiService from "../../apiService";
 
+/**
+ * ManageResources component for handling resource management.
+ * 
+ * This component allows users to create, edit, delete, and manage resources.
+ * It fetches resources from an API and displays them in a data table.
+ * Users can also filter, export, and confirm deletion of resources.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered ManageResources component.
+ * 
+ * @state {Array} resources - The list of resources fetched from the API.
+ * @state {boolean} loading - Indicates if the resources are currently being loaded.
+ * @state {boolean} resourceDialog - Controls the visibility of the resource dialog.
+ * @state {Object|null} editingResource - The resource currently being edited.
+ * @state {boolean} submitted - Indicates if the form has been submitted.
+ * @state {string|null} globalFilter - The global filter for searching resources.
+ * @state {boolean} confirmDeleteDialog - Controls the visibility of the delete confirmation dialog.
+ * @state {Array|null} selectedResources - The resources selected for deletion.
+ * 
+ * @function fetchResources - Fetches resources from the API and updates the state.
+ * @function openNew - Opens the dialog for creating a new resource.
+ * @function hideDialog - Hides the resource dialog.
+ * @function saveResource - Saves the resource (either creates or updates).
+ * @function editResource - Prepares the resource for editing.
+ * @function confirmDeleteSelectedResources - Confirms deletion of selected resources.
+ * @function deleteSelectedResources - Deletes the selected resources from the API.
+ * @function exportCSV - Exports the resources as a CSV file.
+ * @function updateEditingResource - Updates the editing resource state.
+ * @function updateResourceItem - Updates a specific item in the list of resources.
+ * @function addResourceItem - Adds a new resource item to the editing resource.
+ * @function actionBodyTemplate - Renders action buttons for each row in the data table.
+ * @function leftToolbarTemplate - Renders the left toolbar with action buttons.
+ * @function rightToolbarTemplate - Renders the right toolbar with export button.
+ * @function resourceDialogFooter - Renders the footer for the resource dialog.
+ */
 export default function ManageResources() {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);

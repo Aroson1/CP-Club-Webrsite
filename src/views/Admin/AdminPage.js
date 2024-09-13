@@ -11,44 +11,36 @@ import ManageResources from "components/Admin/ManageResources";
 import ManageMembers from "components/Admin/ManageMembers";
 import ManageLeaderboard from "components/Admin/ManageLeaderboard";
 import ManangeHallOfFame from "components/Admin/ManageHallOfFame";
-const options = [
-  {
-    title: "Manage Members",
-    icon: "tim-icons icon-single-02",
-    link: "/admin?tab=members",
-  },
-  {
-    title: "Edit Leaderboard",
-    icon: "tim-icons icon-chart-bar-32",
-    link: "/admin?tab=leaderboard",
-  },
-  {
-    title: "Edit Resource",
-    icon: "tim-icons icon-settings",
-    link: "/admin?tab=resources",
-  },
-  {
-    title: "Add Blog",
-    icon: "tim-icons icon-pencil",
-    link: "/admin?tab=blogs",
-  },
-  {
-    title: "Add Events",
-    icon: "tim-icons icon-calendar-60",
-    link: "/admin?tab=events",
-  },
-  {
-    title: "Hall Of Fame Member",
-    icon: "tim-icons icon-trophy",
-    link: "/admin?tab=hall-of-fame",
-  },
-];
+
+import { options } from "../../_data/_adminPage";
 
 const getTabIndex = (tabName) => {
   const option = options.find((option) => option.link.includes(tabName));
   return option ? options.indexOf(option) + 1 : null;
 };
 
+/**
+ * AdminPage component for managing various admin functionalities.
+ *
+ * This component handles the display of different admin sections based on the selected tab.
+ * It utilizes URL parameters to determine which tab to show and manages the state of the selected tab.
+ *
+ * @component
+ * @example
+ * return (
+ *   <AdminPage />
+ * );
+ *
+ * @returns {JSX.Element} The rendered AdminPage component.
+ *
+ * @hooks
+ * - useState: Manages the currently selected tab index.
+ * - useEffect: Toggles body classes based on the selected tab and cleans up on unmount.
+ *
+ * @functions
+ * - handleOptionClick: Updates the selected tab index when an option is clicked.
+ * - handleBackClick: Resets the selected tab index to null when the back button is clicked.
+ */
 export default function AdminPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const tab = urlParams.get("tab");
@@ -91,34 +83,32 @@ export default function AdminPage() {
               </div>
             </div>
           </div>
-          {
-            (pills == null && (
-              <div className="container animation-container">
-                <Nav
-                  className="nav-pills-info nav-pills-icons justify-content-center animation-container"
-                  pills
-                >
-                  {options.map((option, index) => (
-                    <NavItem key={index} className="slide-transition">
-                      <NavLink
-                        className={classnames({
-                          "active show": true,
-                        })}
-                        onClick={() => handleOptionClick(index + 1)}
-                        href="#no-aboz-plz"
-                        style={{
-                          width: "200px",
-                        }}
-                      >
-                        <i className={option.icon} />
-                        {option.title}
-                      </NavLink>
-                    </NavItem>
-                  ))}
-                </Nav>
-              </div>
-            ))
-          }
+          {pills == null && (
+            <div className="container animation-container">
+              <Nav
+                className="nav-pills-info nav-pills-icons justify-content-center animation-container"
+                pills
+              >
+                {options.map((option, index) => (
+                  <NavItem key={index} className="slide-transition">
+                    <NavLink
+                      className={classnames({
+                        "active show": true,
+                      })}
+                      onClick={() => handleOptionClick(index + 1)}
+                      href="#no-aboz-plz"
+                      style={{
+                        width: "200px",
+                      }}
+                    >
+                      <i className={option.icon} />
+                      {option.title}
+                    </NavLink>
+                  </NavItem>
+                ))}
+              </Nav>
+            </div>
+          )}
           {pills != null && (
             <div>
               <p

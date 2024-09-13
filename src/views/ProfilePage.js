@@ -14,6 +14,27 @@ import {
 import Sidebar from "components/Navbars/SideBar";
 import { Toast } from "primereact/toast";
 import apiService from "../apiService";
+/**
+ * RegisterPage component for user profile management.
+ *
+ * @component
+ * @example
+ * return (
+ *   <RegisterPage />
+ * );
+ *
+ * @returns {JSX.Element} The rendered RegisterPage component.
+ *
+ * @hooks
+ * - useState: Manages local state for profile fields and loading/error states.
+ * - useEffect: Fetches user data on component mount and handles cursor effects.
+ *
+ * @methods
+ * - followCursor: Updates the transformation of squares based on mouse movement.
+ * - fetchUserDetails: Fetches user details from the API and updates state.
+ * - handleSaveChanges: Saves changes made to the user's profile.
+ * - handleLogOut: Logs the user out and clears local storage.
+ */
 export default function RegisterPage() {
   const [squares1to6, setSquares1to6] = useState("");
   const [squares7and8, setSquares7and8] = useState("");

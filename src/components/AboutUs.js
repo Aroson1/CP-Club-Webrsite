@@ -1,52 +1,14 @@
 import React from "react";
-import PerfectScrollbar from "perfect-scrollbar";
 
-import classnames from "classnames";
+import { Button, Container, Row, Col, UncontrolledCarousel } from "reactstrap";
 
+import { carouselItems } from "../_data/_aboutUs";
 
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  Label,
-  FormGroup,
-  Form,
-  Input,
-  FormText,
-  NavItem,
-  NavLink,
-  Nav,
-  Table,
-  TabContent,
-  TabPane,
-  Container,
-  Row,
-  Col,
-  UncontrolledTooltip,
-  UncontrolledCarousel,
-} from "reactstrap";
-
-const carouselItems = [
-  {
-    src: "https://placehold.co/600x400@2x.png",
-    altText: "Slide 1",
-    caption: "Pic One",
-  },
-  {
-    src: "https://placehold.co/600x400@2x.png",
-    altText: "Slide 2",
-    caption: "Pic Two",
-  },
-  {
-    src: "https://placehold.co/600x400@2x.png",
-    altText: "Slide 3",
-    caption: "Pic Three",
-  },
-];
-
-let ps = null;
-
+/**
+ * AboutUs component renders the About Us section of the application.
+ *
+ * @returns {JSX.Element} The rendered About Us section.
+ */
 export default function AboutUs() {
   React.useEffect(() => {
     document.body.classList.toggle("profile-page");

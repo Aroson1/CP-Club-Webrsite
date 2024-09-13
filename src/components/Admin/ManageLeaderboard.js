@@ -11,6 +11,42 @@ import { Dropdown } from "primereact/dropdown";
 import { FileUpload } from "primereact/fileupload";
 import apiService from "../../apiService";
 
+/**
+ * ManageLeaderboard component for displaying and managing the leaderboard.
+ * 
+ * This component fetches student leaderboard data based on the selected semester and year,
+ * allows editing user details, and supports uploading CSV files.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <ManageLeaderboard />
+ * );
+ * 
+ * @returns {JSX.Element} The rendered component.
+ * 
+ * @state {Array} leaderboard - The list of users in the leaderboard.
+ * @state {boolean} leaderboardDialog - Controls the visibility of the user details dialog.
+ * @state {Object} user - The currently selected user for editing.
+ * @state {Array} dialogContestData - The contest data associated with the selected user.
+ * @state {boolean} submitted - Indicates if the form has been submitted.
+ * @state {string|null} globalFilter - The global search filter for the leaderboard.
+ * @state {string} selectedSemester - The currently selected semester (e.g., "ODD", "EVEN").
+ * @state {number} selectedYear - The currently selected year.
+ * @state {boolean} loading - Indicates if data is currently being loaded.
+ * @state {string|null} error - Error message if fetching data fails.
+ * 
+ * @function fetchStudents - Fetches the leaderboard data from the API.
+ * @function handleSemesterChange - Updates the selected semester and fetches students.
+ * @function handleYearChange - Updates the selected year and fetches students.
+ * @function hideDialog - Hides the user details dialog.
+ * @function saveUser - Saves the user details to the API.
+ * @function editUser - Prepares the selected user for editing in the dialog.
+ * @function actionBodyTemplate - Renders the action buttons for each row in the leaderboard.
+ * @function uploadCSV - Handles the CSV file upload.
+ * @function leftToolbarTemplate - Renders the left toolbar with semester and year dropdowns.
+ * @function rightToolbarTemplate - Renders the right toolbar with the CSV upload button.
+ */
 export default function ManageLeaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [leaderboardDialog, setLeaderboardDialog] = useState(false);

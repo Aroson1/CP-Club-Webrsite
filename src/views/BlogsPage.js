@@ -5,7 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { Paginator } from "primereact/paginator";
 import { Toast } from "primereact/toast";
 import apiService from "../apiService";
-import BlogCard from "components/BlogCard"; 
+import BlogCard from "components/BlogCard";
 import "assets/css/sidebar.css";
 import "assets/css/blog.css";
 import "assets/css/lineicons.css";
@@ -13,6 +13,36 @@ import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
+/**
+ * BlogsPage component that displays a list of blogs with pagination and search functionality.
+ *
+ * @component
+ * @example
+ * return (
+ *   <BlogsPage />
+ * );
+ *
+ * @returns {JSX.Element} The rendered BlogsPage component.
+ *
+ * @state {Array} blogs - The list of blogs fetched from the API.
+ * @state {boolean} loading - Indicates whether the blogs are currently being loaded.
+ * @state {string} searchTerm - The term used to filter the displayed blogs.
+ * @state {number} first - The index of the first blog displayed on the current page.
+ * @state {number} rows - The number of blogs displayed per page.
+ * @state {number} totalRecords - The total number of blogs available.
+ *
+ * @function fetchBlogs - Fetches blogs from the API based on the current page and limit.
+ * @param {number} page - The current page number.
+ * @param {number} limit - The number of blogs to fetch per page.
+ *
+ * @function onPageChange - Handles pagination changes and updates the displayed blogs.
+ * @param {Object} event - The event object containing pagination information.
+ * @param {number} event.first - The index of the first blog on the new page.
+ * @param {number} event.rows - The number of blogs to display on the new page.
+ *
+ * @function filteredBlogs - Filters the blogs based on the search term.
+ * @returns {Array} The filtered list of blogs that match the search term.
+ */
 export default function BlogsPage() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -104,7 +134,11 @@ export default function BlogsPage() {
               </div>
             ) : filteredBlogs.length > 0 ? (
               filteredBlogs.map((article, index) => (
-                <BlogCard key={index} article={article} searchTerm={searchTerm} />
+                <BlogCard
+                  key={index}
+                  article={article}
+                  searchTerm={searchTerm}
+                />
               ))
             ) : (
               <div className="col-12 text-center">

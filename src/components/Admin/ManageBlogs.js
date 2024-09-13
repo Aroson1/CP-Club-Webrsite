@@ -12,6 +12,37 @@ import { Calendar } from "primereact/calendar";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import apiService from "../../apiService";
 
+/**
+ * ManageBlogs component for handling blog management in the admin panel.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered ManageBlogs component.
+ *
+ * @state {Array} blogs - The list of blogs fetched from the API.
+ * @state {boolean} loading - Indicates if the blogs are currently being loaded.
+ * @state {boolean} blogDialog - Controls the visibility of the blog dialog.
+ * @state {Object} blog - Represents a new or edited blog.
+ * @state {Object} editedBlog - Holds the data of the blog being edited.
+ * @state {Array} selectedBlogs - The currently selected blogs for actions.
+ * @state {boolean} submitted - Indicates if the form has been submitted.
+ * @state {string} globalFilter - The global filter for searching blogs.
+ * @state {boolean} confirmDeleteDialog - Controls the visibility of the delete confirmation dialog.
+ *
+ * @function fetchBlogs - Fetches the list of blogs from the API.
+ * @function openNew - Opens the dialog for creating a new blog.
+ * @function exportCSV - Exports the current list of blogs as a CSV file.
+ * @function hideDialog - Hides the blog dialog and resets the form.
+ * @function saveBlog - Saves a new or edited blog to the API.
+ * @function findIndexById - Finds the index of a blog by its ID.
+ * @function imageBodyTemplate - Renders the image for a blog in the table.
+ * @function authorTemplate - Renders the author information for a blog in the table.
+ * @function fetchBlogContent - Fetches the content of a specific blog by ID.
+ * @function editBlog - Prepares the blog for editing by fetching its content.
+ * @function confirmDeleteBlog - Opens the confirmation dialog for deleting a blog.
+ * @function deleteSelectedBlogs - Deletes the selected blogs from the API.
+ * @function confirmDeleteSelectedBlogs - Confirms the deletion of selected blogs.
+ * @function actionBodyTemplate - Renders action buttons for each blog in the table.
+ */
 export default function ManageBlogs() {
   let emptyBlog = {
     id: "",

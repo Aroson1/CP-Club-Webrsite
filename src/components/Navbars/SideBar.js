@@ -8,52 +8,36 @@ import { Toast } from "primereact/toast";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 
-const sidebarData = [
-  { title: "Home", icon: "bx-home-alt", link: "/home", subMenu: null },
-  {
-    title: "Events",
-    icon: "bx-calendar",
-    link: "/events",
-    subMenu: null,
-  },
-  {
-    title: "Leaderboard",
-    icon: "bx-bar-chart",
-    link: "/leaderboard",
-    subMenu: null,
-  },
-  {
-    title: "Blogs",
-    icon: "bx-message-alt-detail",
-    link: "/blogs",
-    subMenu: null,
-  },
-  { title: "Resources", icon: "bx-compass", link: "/resources", subMenu: null },
-  {
-    title: "Hall Of Fame",
-    icon: "bx-trophy",
-    link: "/hall-of-fame",
-    subMenu: null,
-  },
-  { title: "Our Team", icon: "bx-user", link: "/team", subMenu: null },
-];
+import { sidebarData, adminSidebarData } from "../../_data/_sidebar";
 
-const adminSidebarData = [
-  {
-    title: "Admin Panel",
-    icon: "bx-cog",
-    link: "/admin",
-    subMenu: [
-      { title: "Manage Members", link: "/admin?tab=members" },
-      { title: "Edit Leaderboard", link: "/admin?tab=leaderboard" },
-      { title: "Edit Resource", link: "/admin?tab=resources" },
-      { title: "Add Blog", link: "/admin?tab=blogs" },
-      { title: "Add Events", link: "/admin?tab=events" },
-      { title: "Add New Hall Of Fame Member", link: "/admin?tab=hall-of-fame" },
-    ],
-  },
-];
-
+/**
+ * Sidebar component for navigation.
+ *
+ * This component manages the state of the sidebar, including whether it is open or closed,
+ * the active submenus, and user login status. It also handles user authentication via Google login.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Sidebar />
+ * );
+ *
+ * @returns {JSX.Element} The rendered sidebar component.
+ *
+ * @state {boolean} sidebarClosed - Indicates if the sidebar is closed.
+ * @state {Object} activeSubMenus - Tracks which submenus are currently active.
+ * @state {boolean} isLoggedIn - Indicates if the user is logged in.
+ * @state {Object|null} userData - Stores user data if logged in.
+ * @ref {Object} toast - Reference to the toast notification component.
+ *
+ * @effect {void} useEffect - Sets up a resize event listener and checks local storage for user data on mount.
+ *
+ * @function toggleSidebar - Toggles the sidebar open/closed state.
+ * @function toggleSubMenu - Toggles the visibility of a submenu based on its title.
+ * @function login - Initiates Google login and handles success/error responses.
+ * @function handleLogin - Fetches user details from Google and updates state accordingly.
+ * @function showToast - Displays a toast notification with the given severity, summary, and detail.
+ */
 export default function Sidebar() {
   const [sidebarClosed, setSidebarClosed] = useState(true);
   const [activeSubMenus, setActiveSubMenus] = useState({});

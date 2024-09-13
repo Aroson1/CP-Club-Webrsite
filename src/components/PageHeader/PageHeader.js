@@ -1,6 +1,4 @@
-
 import React from "react";
-
 
 import { Container } from "reactstrap";
 
@@ -17,9 +15,7 @@ export default function PageHeader() {
       <Container>
         <div className="content-center brand">
           <h1 className="h1-seo">CP CLUB • IIITK</h1>
-          <h3 className="d-none d-sm-block">
-            gimme some tagline here vibhaas
-          </h3>
+          <h3 className="d-none d-sm-block">gimme some tagline here vibhaas</h3>
         </div>
       </Container>
     </div>

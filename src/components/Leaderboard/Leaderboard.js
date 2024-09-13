@@ -14,6 +14,39 @@ import { Chart } from "primereact/chart";
 import { Toast } from "primereact/toast";
 import apiService from "../../apiService";
 
+/**
+ * LeaderboardPage component displays a leaderboard of students with their semester points.
+ * It allows filtering by semester, year, and student name.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered LeaderboardPage component.
+ * 
+ * @example
+ * // Usage of LeaderboardPage component
+ * <LeaderboardPage />
+ * 
+ * @state {Array} students - The list of students fetched from the API.
+ * @state {string} globalFilterValue - The value for the global filter input.
+ * @state {boolean} visible - Controls the visibility of the points breakdown dialog.
+ * @state {Object} chartData - Data for the chart displaying points breakdown.
+ * @state {Object} chartOptions - Options for the chart.
+ * @state {Object|null} selectedStudent - The currently selected student for detailed view.
+ * @state {number} selectedYear - The year selected for filtering students.
+ * @state {Object} filters - The filters applied to the student list.
+ * @state {string} selectedSemester - The semester selected for filtering students.
+ * @state {boolean} loading - Indicates if the data is currently being loaded.
+ * @state {string|null} error - Error message if fetching students fails.
+ * 
+ * @function fetchStudents - Fetches the list of students based on selected semester and year.
+ * @function handleSemesterChange - Updates the selected semester and fetches students.
+ * @function handleYearChange - Updates the selected year and fetches students.
+ * @function onGlobalFilterChange - Updates the global filter value and applies it.
+ * @function renderHeader - Renders the header with dropdowns for semester and year selection.
+ * @function nameBodyTemplate - Renders the name cell in the data table.
+ * @function batchBodyTemplate - Renders the batch cell in the data table with severity tag.
+ * @function batchFilterTemplate - Renders the filter dropdown for batch selection.
+ * @function onRowSelect - Handles the event when a row is selected, displaying the points breakdown.
+ */
 export default function LeaderboardPage() {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();

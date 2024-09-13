@@ -11,6 +11,41 @@ import { Calendar } from "primereact/calendar";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import apiService from "../../apiService";
 
+/**
+ * ManageEvents component for managing event data.
+ *
+ * This component allows users to create, edit, delete, and export events.
+ * It fetches events from an API and displays them in a data table.
+ * Users can filter events, and a dialog is provided for adding or editing event details.
+ *
+ * @component
+ * @example
+ * return (
+ *   <ManageEvents />
+ * );
+ *
+ * @returns {JSX.Element} The rendered ManageEvents component.
+ *
+ * @typedef {Object} Event
+ * @property {number|null} id - The unique identifier for the event.
+ * @property {string} blogId - The associated blog ID for the event.
+ * @property {string} title - The title of the event.
+ * @property {Date|null} date - The date of the event.
+ * @property {string} imageUrl - The URL of the event's image.
+ *
+ * @function fetchEvents - Fetches the list of events from the API.
+ * @function openNew - Opens the dialog for creating a new event.
+ * @function editEvent - Opens the dialog for editing an existing event.
+ * @function confirmDeleteSelectedEvents - Confirms deletion of selected events.
+ * @function deleteSelectedEvents - Deletes selected events from the API.
+ * @function exportCSV - Exports the events data as a CSV file.
+ * @function hideDialog - Hides the event dialog.
+ * @function saveEvent - Saves the new or edited event to the API.
+ * @function imageBodyTemplate - Renders the image for an event in the data table.
+ * @function blogIdTemplate - Renders a link to the blog details for an event.
+ * @function actionBodyTemplate - Renders action buttons for editing events.
+ * @function onInputChange - Handles input changes in the event dialog.
+ */
 export default function ManageEvents() {
   let emptyEvent = {
     id: null,

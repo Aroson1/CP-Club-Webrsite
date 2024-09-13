@@ -7,6 +7,34 @@ import "../assets/css/sidebar.css";
 import "../assets/css/resources.css";
 import "../assets/css/lineicons.css";
 
+/**
+ * ResourcesPage component that fetches and displays a list of resources.
+ *
+ * @component
+ * @example
+ * return (
+ *   <ResourcesPage />
+ * );
+ *
+ * @returns {JSX.Element} The rendered ResourcesPage component.
+ *
+ * @state {Array} resourcesList - The list of resources fetched from the API.
+ * @state {boolean} loading - Indicates whether the resources are currently being loaded.
+ * @state {string|null} error - Holds any error message encountered during the fetch operation.
+ *
+ * @ref {Object} toast - Reference to the Toast component for displaying error messages.
+ *
+ * @function fetchResources - Asynchronously fetches resources from the API and updates the state.
+ *   - Sets loading to true before fetching.
+ *   - Updates resourcesList with the fetched data or sets an error message if the fetch fails.
+ *   - Sets loading to false after the fetch operation is complete.
+ *
+ * @effect {void} useEffect - Toggles body classes and fetches resources on component mount.
+ *   - Cleans up by toggling the body class on unmount.
+ *
+ * @effect {void} useEffect - Displays an error toast if an error occurs.
+ *   - Triggers when the error state changes.
+ */
 export default function ResourcesPage() {
   const [resourcesList, setResourcesList] = useState([]);
   const [loading, setLoading] = useState(true);

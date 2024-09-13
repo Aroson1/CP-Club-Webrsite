@@ -10,6 +10,24 @@ import "../assets/css/splash.css";
 import "../assets/css/sidebar.css";
 import Footer from "components/Footer/Footer";
 
+/**
+ * HomePage component
+ *
+ * @component
+ * @example
+ * return (
+ *   <HomePage />
+ * );
+ *
+ * @returns {JSX.Element} The rendered HomePage component.
+ *
+ * @state {Array} blogs - The list of blogs fetched from the API.
+ * @state {boolean} loading - Indicates if the blogs are currently being loaded.
+ * @state {string|null} error - Holds any error message if fetching blogs fails.
+ *
+ * @effect {void} fetchBlogs - Fetches blogs from the API on component mount.
+ * @effect {void} error handling - Displays a toast notification if an error occurs.
+ */
 export default function HomePage() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,7 +71,7 @@ export default function HomePage() {
   }, [error]);
 
   return (
-    <section className="" style={{overflowX: "hidden"}}>
+    <section className="" style={{ overflowX: "hidden" }}>
       <SideBar />
       <PageHeader />
       <AboutUs />

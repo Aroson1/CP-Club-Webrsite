@@ -18,6 +18,35 @@ import "highlight.js/styles/github-dark.css";
 import "tocbot/dist/tocbot.css";
 import tocbot from "tocbot";
 
+/**
+ * BlogDetailsPage component displays the details of a specific blog post,
+ * including related articles, author information, and a table of contents.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered BlogDetailsPage component.
+ *
+ * @example
+ * // Usage of BlogDetailsPage
+ * <BlogDetailsPage />
+ *
+ * @hooks
+ * - useState: Manages the state for blog details, related articles, loading status, and error messages.
+ * - useEffect:
+ *   - Fetches blog details and related articles when the component mounts or when the pageId changes.
+ *   - Initializes the table of contents when blog content is available.
+ *   - Displays error messages using a toast notification.
+ *
+ * @dependencies
+ * - apiService: Service for making API calls to fetch blog data.
+ * - ReactMarkdown: Component for rendering markdown content.
+ * - tocbot: Library for generating a table of contents.
+ * - SideBar: Component for displaying the sidebar.
+ * - Toast: Component for displaying notifications.
+ * - BlogCard: Component for rendering related articles.
+ *
+ * @props
+ * - None
+ */
 export default function BlogDetailsPage() {
   const [blogDetail, setBlogDetail] = useState(null);
   const [relatedArticles, setRelatedArticles] = useState([]);

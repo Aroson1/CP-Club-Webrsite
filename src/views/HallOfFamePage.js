@@ -7,6 +7,27 @@ import "../assets/css/sidebar.css";
 import "../assets/css/hall-of-fame.css";
 import "../assets/css/lineicons.css";
 
+/**
+ * HallOfFamePage component that displays a list of people in the Hall of Fame.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Hall of Fame page.
+ *
+ * @state {Array} peopleList - The list of people to be displayed.
+ * @state {boolean} loading - Indicates if the data is currently being loaded.
+ * @state {string|null} error - Holds any error message that occurs during data fetching.
+ *
+ * @ref {Object} toast - Reference to the Toast component for displaying messages.
+ *
+ * @function fetchPeople - Asynchronously fetches the list of people from the API.
+ *
+ * @effect {void} useEffect - Toggles body classes and fetches people on component mount.
+ * @effect {void} useEffect - Displays an error message if an error occurs during fetching.
+ *
+ * @example
+ * // Usage
+ * <HallOfFamePage />
+ */
 export default function HallOfFamePage() {
   const [peopleList, setPeopleList] = useState([]);
   const [loading, setLoading] = useState(true);

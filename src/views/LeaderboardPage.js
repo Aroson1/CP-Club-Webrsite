@@ -3,6 +3,17 @@ import SideBar from "components/Navbars/SideBar.js";
 import Leaderboard from "components/Leaderboard/Leaderboard";
 import "../assets/css/sidebar.css";
 
+/**
+ * BlogsPage component renders the Leaderboard page.
+ *
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Leaderboard page.
+ *
+ * @example
+ * // Usage
+ * <BlogsPage />
+ */
 export default function BlogsPage() {
   React.useEffect(() => {
     document.body.classList.toggle("index-page");
@@ -19,18 +30,16 @@ export default function BlogsPage() {
       <img alt="..." className="dots" src={require("assets/img/dots.png")} />
 
       <section className="container position-relative">
-        <div class="container" style={{padding: "50px 0px"}}>
+        <div class="container" style={{ padding: "50px 0px" }}>
           <div class="row">
             <div class="col-lg-12">
               <div class="cpc-section-title mx-auto text-center">
                 <h2>Leaderboard</h2>
-                <p>
-                  Check out the top performers in the community!
-                </p>
+                <p>Check out the top performers in the community!</p>
               </div>
             </div>
           </div>
-        <Leaderboard />
+          <Leaderboard />
         </div>
       </section>
     </section>

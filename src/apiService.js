@@ -1,7 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+const BACKEND_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
@@ -58,6 +59,29 @@ apiClient.interceptors.response.use(
   }
 );
 
+/**
+ * API Service for handling HTTP requests.
+ * 
+ * @module apiService
+ * 
+ * @typedef {Object} ApiService
+ * @property {function(string, Object): Promise<Object>} get - Sends a GET request to the specified URL with optional parameters.
+ * @property {function(string, Object): Promise<Object>} post - Sends a POST request to the specified URL with the provided data.
+ * @property {function(string, Object): Promise<Object>} put - Sends a PUT request to the specified URL with the provided data.
+ * @property {function(string): Promise<void>} delete - Sends a DELETE request to the specified URL.
+ * 
+ * @example
+ * const data = await apiService.get('/api/data', { id: 1 });
+ * 
+ * @example
+ * await apiService.post('/api/data', { name: 'New Item' });
+ * 
+ * @example
+ * await apiService.put('/api/data/1', { name: 'Updated Item' });
+ * 
+ * @example
+ * await apiService.delete('/api/data/1');
+ */
 const apiService = {
   get: async (url, params) => {
     try {

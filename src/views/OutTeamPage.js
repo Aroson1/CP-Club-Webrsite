@@ -6,30 +6,21 @@ import "../assets/css/sidebar.css";
 import "../assets/css/teams.css";
 import "../assets/css/animate.css";
 import "../assets/css/lineicons.css";
+import { membersList } from "../_data/_ourTeamPage";
 
-const membersList = [
-  {
-    name: "Vibhaas The Guy",
-    role: "CP Expert",
-    image: "https://placehold.co/400",
-  },
-  {
-    name: "Shuxn The Guy",
-    role: "Web Developer",
-    image: "https://placehold.co/400",
-  },
-  {
-    name: "Pevan The Guy",
-    role: "Pevan",
-    image: "https://placehold.co/400",
-  },
-  {
-    name: "VPN The Guy",
-    role: "Alon Muskmelon",
-    image: "https://placehold.co/400",
-  },
-];
-
+/**
+ * OurTeamPage component displays a section showcasing team members.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered component containing the team section.
+ *
+ * @example
+ * // Usage
+ * <OurTeamPage />
+ *
+ * @see SideBar
+ * @see membersList
+ */
 export default function OurTeamPage() {
   React.useEffect(() => {
     document.body.classList.toggle("index-page");

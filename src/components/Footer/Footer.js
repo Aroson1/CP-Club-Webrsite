@@ -12,6 +12,22 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
+/**
+ * Footer component that displays the footer section of the application.
+ * It adjusts its layout based on the screen size to provide a mobile-friendly view.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Footer />
+ * );
+ *
+ * @returns {JSX.Element} The rendered footer component.
+ *
+ * @hooks
+ * useState - Manages the mobile view state.
+ * useEffect - Sets up an event listener for window resize events to update the mobile view state.
+ */
 export default function Footer() {
   const [isMobileView, setIsMobileView] = useState(false);
 

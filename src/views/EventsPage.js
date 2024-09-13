@@ -9,6 +9,29 @@ import "../assets/css/blog.css";
 import "../assets/css/animate.css";
 import "../assets/css/lineicons.css";
 
+/**
+ * EventsPage component that fetches and displays a list of events.
+ *
+ * @component
+ * @example
+ * return (
+ *   <EventsPage />
+ * );
+ *
+ * @returns {JSX.Element} The rendered EventsPage component.
+ *
+ * @state {Array} events - The list of events fetched from the API.
+ * @state {boolean} loading - Indicates whether the events are currently being loaded.
+ * @state {string|null} error - Holds any error message encountered during the fetch.
+ *
+ * @ref {Object} toast - Reference to the Toast component for displaying messages.
+ *
+ * @function fetchEvents - Asynchronously fetches events from the API and updates state.
+ * @function cleanup - Cleans up side effects when the component unmounts.
+ *
+ * @effect {void} useEffect - Toggles body classes and fetches events on component mount.
+ * @effect {void} useEffect - Displays an error message in the toast if an error occurs.
+ */
 export default function EventsPage() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);

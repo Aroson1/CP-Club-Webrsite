@@ -10,6 +10,38 @@ import { Dialog } from "primereact/dialog";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import apiService from "../../apiService";
 
+/**
+ * ManageHallOfFame component for managing Hall of Fame members.
+ *
+ * This component allows users to view, add, edit, and delete members of the Hall of Fame.
+ * It includes functionalities for searching, exporting data, and displaying member details in a dialog.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ *
+ * @example
+ * // Usage
+ * <ManageHallOfFame />
+ *
+ * @typedef {Object} Member
+ * @property {number|null} id - The unique identifier for the member.
+ * @property {string} name - The name of the member.
+ * @property {string} image - The URL of the member's image.
+ * @property {string} title - The title or position of the member.
+ * @property {string} description - A brief description of the member.
+ *
+ * @function fetchMembers - Fetches the list of members from the API.
+ * @function openNew - Opens the dialog to add a new member.
+ * @function editMember - Opens the dialog to edit an existing member.
+ * @function confirmDeleteSelectedMembers - Confirms the deletion of selected members.
+ * @function deleteSelectedMembers - Deletes the selected members from the API.
+ * @function exportCSV - Exports the member data as a CSV file.
+ * @function hideDialog - Hides the member dialog.
+ * @function saveMember - Saves the new or edited member to the API.
+ * @function personBodyTemplate - Renders the member's name and image in the data table.
+ * @function actionBodyTemplate - Renders action buttons for editing members in the data table.
+ * @function onInputChange - Handles input changes for member fields.
+ */
 export default function ManageHallOfFame() {
   let emptyMember = {
     id: null,
