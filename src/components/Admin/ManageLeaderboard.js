@@ -9,22 +9,23 @@ import { InputText } from "primereact/inputtext";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { FileUpload } from "primereact/fileupload";
+import { confirmDialog } from "primereact/confirmdialog";
 import apiService from "../../apiService";
 
 /**
  * ManageLeaderboard component for displaying and managing the leaderboard.
- * 
+ *
  * This component fetches student leaderboard data based on the selected semester and year,
  * allows editing user details, and supports uploading CSV files.
- * 
+ *
  * @component
  * @example
  * return (
  *   <ManageLeaderboard />
  * );
- * 
+ *
  * @returns {JSX.Element} The rendered component.
- * 
+ *
  * @state {Array} leaderboard - The list of users in the leaderboard.
  * @state {boolean} leaderboardDialog - Controls the visibility of the user details dialog.
  * @state {Object} user - The currently selected user for editing.
@@ -35,7 +36,7 @@ import apiService from "../../apiService";
  * @state {number} selectedYear - The currently selected year.
  * @state {boolean} loading - Indicates if data is currently being loaded.
  * @state {string|null} error - Error message if fetching data fails.
- * 
+ *
  * @function fetchStudents - Fetches the leaderboard data from the API.
  * @function handleSemesterChange - Updates the selected semester and fetches students.
  * @function handleYearChange - Updates the selected year and fetches students.
@@ -63,11 +64,13 @@ export default function ManageLeaderboard() {
   const [globalFilter, setGlobalFilter] = useState(null);
   const [selectedSemester, setSelectedSemester] = useState("ODD");
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const toast = useRef(null);
-  const dt = useRef(null);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [csvData, setCsvData] = useState([]);
+  const [csvDialog, setCsvDialog] = useState(false);
+  const toast = useRef(null);
+  const dt = useRef(null);
+  const fileUploadRef = useRef(null);
 
   const fetchStudents = async () => {
     setLoading(true);
@@ -241,14 +244,124 @@ export default function ManageLeaderboard() {
     );
   };
 
-  const uploadCSV = (event) => {
-    toast.current.show({
-      severity: "info",
-      summary: "File Uploaded",
-      detail: "CSV file uploaded successfully",
-      life: 3000,
-    });
+  const processCSV = (csv) => {
+    const lines = csv.split("\n").filter((line) => line.trim() !== "");
+    const headers = lines[0]
+      .toLowerCase()
+      .split(",")
+      .map((header) => header.trim());
+    const nameIndex = headers.indexOf("name");
+    const rollNumberIndex = headers.findIndex((h) => h.includes("roll number"));
+
+    if (nameIndex === -1 || rollNumberIndex === -1) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "CSV must include 'Name' and 'Roll Number' columns",
+        life: 3000,
+      });
+      return null;
+    }
+
+    const contestNames = headers.slice(rollNumberIndex + 1);
+    const processedData = lines.slice(1).reduce((acc, line) => {
+      const values = line.split(",").map((value) => value.trim());
+
+      // Check if the row has the correct number of values
+      if (values.length === headers.length) {
+        const name = values[nameIndex];
+        const rollNumber = values[rollNumberIndex];
+
+        // Only process rows with both name and roll number
+        if (name && rollNumber) {
+          const chartData = {};
+          contestNames.forEach((contest, index) => {
+            const points = parseInt(values[rollNumberIndex + 1 + index]) || 0;
+            chartData[contest.trim()] = points;
+          });
+
+          acc.push({
+            name: name,
+            rollNumber: rollNumber,
+            chartData: chartData,
+          });
+        }
+      }
+
+      return acc;
+    }, []);
+
+    return processedData;
   };
+
+  const uploadCSV = (event) => {
+    const file = event.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const csv = e.target.result;
+      const processedData = processCSV(csv);
+
+      if (processedData) {
+        setCsvData(processedData);
+        setCsvDialog(true);
+      }
+    };
+
+    reader.readAsText(file);
+
+    // Clear the file input to allow re-upload of the same file
+    fileUploadRef.current.clear();
+  };
+
+  const sendDataToDatabase = async () => {
+    const apiData = csvData.map((item) => ({
+      rollNumber: item.rollNumber,
+      sem: selectedSemester,
+      year: selectedYear,
+      chartData: item.chartData,
+    }));
+
+    try {
+      const response = await apiService.put(
+        "/v1/leaderboard/updateMultiple",
+        apiData
+      );
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Leaderboard updated successfully",
+        life: 3000,
+      });
+      fetchStudents();
+      setCsvDialog(false);
+    } catch (error) {
+      console.error("Error updating leaderboard:", error);
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "Failed to update leaderboard",
+        life: 3000,
+      });
+    }
+  };
+
+  const csvDialogFooter = (
+    <div>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        onClick={() => setCsvDialog(false)}
+        className="p-button-text"
+      />
+      <Button
+        label="Upload"
+        icon="pi pi-check"
+        onClick={sendDataToDatabase}
+        autoFocus
+      />
+    </div>
+  );
 
   const leftToolbarTemplate = () => {
     return (
@@ -275,13 +388,14 @@ export default function ManageLeaderboard() {
   const rightToolbarTemplate = () => {
     return (
       <FileUpload
+        ref={fileUploadRef}
         mode="basic"
         accept=".csv"
         maxFileSize={1000000}
-        label="Upload CSV"
-        chooseLabel="Upload CSV"
-        className="p-button-success"
+        customUpload
         uploadHandler={uploadCSV}
+        auto
+        chooseLabel="Upload CSV"
       />
     );
   };
@@ -399,6 +513,33 @@ export default function ManageLeaderboard() {
                 />
               </div>
             </div>
+          </Dialog>
+
+          <Dialog
+            visible={csvDialog}
+            style={{ width: "80vw" }}
+            header="CSV Data"
+            modal
+            className="p-fluid"
+            footer={csvDialogFooter}
+            onHide={() => setCsvDialog(false)}
+          >
+            <DataTable
+              value={csvData}
+              paginator
+              rows={10}
+              rowsPerPageOptions={[5, 10, 25]}
+            >
+              <Column field="name" header="Name" />
+              <Column field="rollNumber" header="Roll Number" />
+              {Object.keys(csvData[0]?.chartData || {}).map((contest) => (
+                <Column
+                  key={contest}
+                  field={`chartData.${contest}`}
+                  header={contest}
+                />
+              ))}
+            </DataTable>
           </Dialog>
         </div>
       )}
