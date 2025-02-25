@@ -5,6 +5,7 @@ import { NavItem, NavLink, Nav } from "reactstrap";
 import "../../assets/css/sidebar.css";
 import "../../assets/css/admin.css";
 import "../../assets/css/lineicons.css";
+import dots from "../../assets/img/dots.png";
 import ManageBlogs from "../../components/Admin/ManageBlogs";
 import ManageEvents from "../../components/Admin/ManageEvents";
 import ManageResources from "../../components/Admin/ManageResources";
@@ -70,8 +71,7 @@ export default function AdminPage() {
 
   return (
     <section className="">
-      <SideBar />
-      <img alt="..." className="dots" src={require("assets/img/dots.png")} />
+      <img alt="..." className="dots" src={dots} />
 
       <section id="team" className="cpc-team">
         <div className="container">

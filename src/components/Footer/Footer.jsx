@@ -63,7 +63,7 @@ export default function Footer() {
                   style={{ "text-transform": "inherit", cursor: "pointer" }}
                 >
                   Developed between snack breaks and existential crises by{" "}
-                  <a href="https://github.com/Aroson1">Alex Gijo</a>
+                  Alex Gijo
                 </NavLink>
               </NavItem>
             </Nav>

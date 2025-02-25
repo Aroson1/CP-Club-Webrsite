@@ -1,12 +1,13 @@
 import React from "react";
 import SideBar from "../components/Navbars/SideBar";
-import { ReactComponent as DotGrid } from "../assets/img/team/dotted-shape.svg";
-import { ReactComponent as Pie } from "../assets/img/team/shape-2.svg";
+import DotGrid from "../assets/img/team/dotted-shape.svg";
+import Pie from "../assets/img/team/shape-2.svg";
 import "../assets/css/sidebar.css";
 import "../assets/css/teams.css";
 import "../assets/css/animate.css";
 import "../assets/css/lineicons.css";
 import { membersList } from "../_data/_ourTeamPage";
+import dotsImage from "../assets/img/dots.png";
 
 /**
  * OurTeamPage component displays a section showcasing team members.
@@ -34,7 +35,7 @@ export default function OurTeamPage() {
   return (
     <section className="">
       <SideBar />
-      <img alt="..." className="dots" src={require("assets/img/dots.png")} />
+      <img alt="..." className="dots" src={dotsImage} />
 
       <section id="team" class="cpc-team">
         <div class="container">
@@ -61,8 +62,8 @@ export default function OurTeamPage() {
                       <img src={member.image} alt="team" />
                     </div>
 
-                    <DotGrid alt="shape" className="shape shape-1" />
-                    <Pie alt="shape" class="shape shape-2" />
+                    <img src={DotGrid} alt="shape" className="shape shape-1" />
+                    <img src={Pie} alt="shape" className="shape shape-2" />
                   </div>
                   <div class="cpc-team-info">
                     <h5>{member.name}</h5>

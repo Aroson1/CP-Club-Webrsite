@@ -7,7 +7,7 @@ import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { Toast } from "primereact/toast";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/saga-blue/theme.css";
-
+import loginImage from "../../assets/img/login.png";
 import { sidebarData, adminSidebarData } from "../../_data/_sidebar";
 
 /**
@@ -240,7 +240,7 @@ export default function Sidebar() {
                 onClick={login}
               >
                 <div className="profile-content">
-                  <img src={require("assets/img/login.png")} alt="profileImg" />
+                  <img src={loginImage} alt="profileImg" />
                 </div>
                 <div className="name-job">
                   <div className="profile_name">Sign In</div>

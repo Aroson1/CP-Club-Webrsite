@@ -30,12 +30,15 @@ import "primeicons/primeicons.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // Getting Google Client ID from environment variables
-const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 // Retrieving user data from local storage
 const userData = localStorage.getItem("userData");
 
 // Rendering the application
-ReactDOM.render(
+import { createRoot } from "react-dom/client";
+
+const root = createRoot(document.getElementById("root")); // Mounting the app to the root element
+root.render(
   <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <PrimeReactProvider>
       <BrowserRouter>
@@ -62,6 +65,5 @@ ReactDOM.render(
         </Routes>
       </BrowserRouter>
     </PrimeReactProvider>
-  </GoogleOAuthProvider>,
-  document.getElementById("root") // Mounting the app to the root element
+  </GoogleOAuthProvider>
 );

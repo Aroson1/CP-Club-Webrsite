@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const BACKEND_URL =
-  process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,

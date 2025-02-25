@@ -12,6 +12,7 @@ import "../assets/css/lineicons.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import dots from "../assets/img/dots.png";
 
 /**
  * BlogsPage component that displays a list of blogs with pagination and search functionality.
@@ -98,7 +99,7 @@ export default function BlogsPage() {
   return (
     <section className="">
       <SideBar />
-      <img alt="..." className="dots" src={require("assets/img/dots.png")} />
+      <img alt="..." className="dots" src={dots} />
       <Toast ref={toast} />
 
       <section className="cpc-blog-grids cpc-related-articles">

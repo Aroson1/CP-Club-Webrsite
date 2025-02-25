@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Container, Row } from "reactstrap";
+import dots from "../assets/img/dots.png";
 import BlogCard from "../components/BlogCard";
 import SideBar from "../components/Navbars/SideBar";
 import { Toast } from "primereact/toast";
@@ -129,7 +130,7 @@ export default function BlogDetailsPage() {
   return (
     <section className="">
       <SideBar />
-      <img alt="..." className="dots" src={require("assets/img/dots.png")} />
+      <img alt="..." className="dots" src={dots} />
       <Toast ref={toast} />
 
       <section className="cpc-blog-details cpc-related-articles">

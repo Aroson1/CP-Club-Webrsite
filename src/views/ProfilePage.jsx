@@ -14,6 +14,7 @@ import {
 import Sidebar from "../components/Navbars/SideBar";
 import { Toast } from "primereact/toast";
 import apiService from "../apiService";
+import dotsImage from "../assets/img/dots.png";
 /**
  * RegisterPage component for user profile management.
  *
@@ -177,11 +178,7 @@ export default function RegisterPage() {
       <div className="wrapper" style={{ height: "100vh", overflow: "hidden" }}>
         <div className="page-header" style={{ height: "100%" }}>
           <Sidebar />
-          <img
-            alt="..."
-            className="dots"
-            src={require("assets/img/dots.png")}
-          />
+          
 
           <Container className="h-100">
             <Row className="h-100">

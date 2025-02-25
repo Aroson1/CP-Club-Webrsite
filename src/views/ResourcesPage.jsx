@@ -6,6 +6,7 @@ import apiService from "../apiService";
 import "../assets/css/sidebar.css";
 import "../assets/css/resources.css";
 import "../assets/css/lineicons.css";
+import dots from "../assets/img/dots.png";
 
 /**
  * ResourcesPage component that fetches and displays a list of resources.
@@ -78,7 +79,7 @@ export default function ResourcesPage() {
   return (
     <section className="">
       <SideBar />
-      <img alt="..." className="dots" src={require("assets/img/dots.png")} />
+      <img alt="..." className="dots" src={dots} />
       <Toast ref={toast} />
 
       <section id="resources" className="cpc-resources">

@@ -8,6 +8,7 @@ import "../assets/css/events.css";
 import "../assets/css/blog.css";
 import "../assets/css/animate.css";
 import "../assets/css/lineicons.css";
+import dots from "../assets/img/dots.png";
 
 /**
  * EventsPage component that fetches and displays a list of events.
@@ -39,6 +40,7 @@ export default function EventsPage() {
   const toast = useRef(null);
 
   const fetchEvents = async () => {
+    console.log("Dots image", dots);
     setLoading(true);
     try {
       const response = await apiService.get("/v1/events");
@@ -75,7 +77,7 @@ export default function EventsPage() {
   return (
     <section className="">
       <SideBar />
-      <img alt="..." className="dots" src={require("assets/img/dots.png")} />
+      <img alt="..." className="dots" src={dots} />
       <Toast ref={toast} />
 
       <section id="team" className="cpc-team">

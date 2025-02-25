@@ -2,6 +2,7 @@ import React from "react";
 import SideBar from "../components/Navbars/SideBar";
 import Leaderboard from "../components/Leaderboard/Leaderboard";
 import "../assets/css/sidebar.css";
+import dots from "../assets/img/dots.png";
 
 /**
  * BlogsPage component renders the Leaderboard page.
@@ -27,7 +28,7 @@ export default function BlogsPage() {
   return (
     <section className="">
       <SideBar />
-      <img alt="..." className="dots" src={require("assets/img/dots.png")} />
+      <img alt="..." className="dots" src={dots} />
 
       <section className="container position-relative">
         <div class="container" style={{ padding: "50px 0px" }}>
