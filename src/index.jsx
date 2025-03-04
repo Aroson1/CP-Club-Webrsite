@@ -1,7 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { PrimeReactProvider } from "primereact/api";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AuthProvider } from "./auth/AuthContext";
+import ProtectedRoute from "./auth/ProtectedRoute";
+import AdminRoute from "./auth/AdminRoute";
 
 // Importing CSS files for styling
 import "./assets/css/nucleo-icons.css";
@@ -19,6 +23,8 @@ import EventsPage from "./views/EventsPage";
 import LeaderboardPage from "./views/LeaderboardPage";
 import HallOfFamePage from "./views/HallOfFamePage";
 import AdminPage from "./views/Admin/AdminPage";
+import AuthCallbackPage from "./views/AuthCallbackPage";
+// import UnauthorizedPage from "./views/UnauthorizedPage";
 
 // Importing PrimeReact styles
 import "primereact/resources/primereact.css";
@@ -26,44 +32,45 @@ import "primeflex/primeflex.css";
 import "primereact/resources/themes/lara-dark-blue/theme.css";
 import "primeicons/primeicons.css";
 
-// Importing Google OAuth provider
-import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // Getting Google Client ID from environment variables
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-// Retrieving user data from local storage
-const userData = localStorage.getItem("userData");
-
-// Rendering the application
-import { createRoot } from "react-dom/client";
 
 const root = createRoot(document.getElementById("root")); // Mounting the app to the root element
 root.render(
   <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <PrimeReactProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Defining application routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/blogs" element={<BlogsPage />} />
-          <Route path="/blog-details" element={<BlogDetailsPage />} />
-          <Route path="/resources" element={<ResourcesPage />} />
-          <Route path="/team" element={<OurTeamPage />} />
-          <Route path="/leaderboard" element={<LeaderboardPage />} />
-          <Route path="/events" element={<EventsPage />} />
-          <Route path="/hall-of-fame" element={<HallOfFamePage />} />
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/home" element={<Navigate to="/" replace />} />
+            <Route path="/blogs" element={<BlogsPage />} />
+            <Route path="/blog-details" element={<BlogDetailsPage />} />
+            <Route path="/resources" element={<ResourcesPage />} />
+            <Route path="/team" element={<OurTeamPage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/hall-of-fame" element={<HallOfFamePage />} />
+            <Route path="/auth/callback" element={<AuthCallbackPage />} />
+            <Route path="/unauthorized" element={<Navigate to="/" replace />} />
 
-          {/* Conditional rendering for profile and admin routes based on user data */}
-          {userData && <Route path="/profile" element={<ProfilePage />} />}
-          {userData && JSON.parse(userData).role === "ADMIN" && (
-            <Route path="/admin" element={<AdminPage />} />
-          )}
+            {/* Protected routes (require authentication) */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/profile" element={<ProfilePage />} />
+            </Route>
 
-          {/* Redirecting any unknown routes to the home page */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
+            {/* Admin-only routes */}
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminPage />} />
+            </Route>
+
+            {/* Redirecting any unknown routes to the home page */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </PrimeReactProvider>
   </GoogleOAuthProvider>
 );

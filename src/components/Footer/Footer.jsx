@@ -47,7 +47,7 @@ export default function Footer() {
   return (
     <footer className="footer" style={{ textAlign: "center" }}>
       <Container>
-        <Row className="justify-content-between">
+        <Row className="justify-content-around">
           <Col
             md="4"
             className="align-items-center justify-content-center d-flex"

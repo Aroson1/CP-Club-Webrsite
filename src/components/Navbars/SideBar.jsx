@@ -1,49 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import apiService from "../../apiService";
-import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 import "../../assets/css/sidebar.css";
-import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { Toast } from "primereact/toast";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import loginImage from "../../assets/img/login.png";
 import { sidebarData, adminSidebarData } from "../../_data/_sidebar";
+import { useAuth } from "../../auth/AuthContext";
 
-/**
- * Sidebar component for navigation.
- *
- * This component manages the state of the sidebar, including whether it is open or closed,
- * the active submenus, and user login status. It also handles user authentication via Google login.
- *
- * @component
- * @example
- * return (
- *   <Sidebar />
- * );
- *
- * @returns {JSX.Element} The rendered sidebar component.
- *
- * @state {boolean} sidebarClosed - Indicates if the sidebar is closed.
- * @state {Object} activeSubMenus - Tracks which submenus are currently active.
- * @state {boolean} isLoggedIn - Indicates if the user is logged in.
- * @state {Object|null} userData - Stores user data if logged in.
- * @ref {Object} toast - Reference to the toast notification component.
- *
- * @effect {void} useEffect - Sets up a resize event listener and checks local storage for user data on mount.
- *
- * @function toggleSidebar - Toggles the sidebar open/closed state.
- * @function toggleSubMenu - Toggles the visibility of a submenu based on its title.
- * @function login - Initiates Google login and handles success/error responses.
- * @function handleLogin - Fetches user details from Google and updates state accordingly.
- * @function showToast - Displays a toast notification with the given severity, summary, and detail.
- */
 export default function Sidebar() {
   const [sidebarClosed, setSidebarClosed] = useState(true);
   const [activeSubMenus, setActiveSubMenus] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState(null);
   const toast = useRef(null);
+  const navigate = useNavigate();
+  
+  // Use the auth context instead of managing auth state here
+  const { isAuthenticated, user, isAdmin, login, logout } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
@@ -52,12 +24,7 @@ export default function Sidebar() {
       }
     };
     window.addEventListener("resize", handleResize);
-    const storedUserData = localStorage.getItem("userData");
-    if (storedUserData) {
-      const user = JSON.parse(storedUserData);
-      setIsLoggedIn(true);
-      setUserData(user);
-    }
+    
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -72,63 +39,23 @@ export default function Sidebar() {
     }));
   };
 
-  const login = useGoogleLogin({
-    onSuccess: (codeResponse) => handleLogin(codeResponse),
-    onError: (error) => {
-      console.log("Login Failed:", error);
-      showToast("error", "Login Failed", "An error occurred during login.");
-    },
-  });
+  const showToast = (severity, summary, detail) => {
+    toast.current.show({ severity, summary, detail });
+  };
 
-  const handleLogin = async (user) => {
+  const handleLogout = async () => {
     try {
-      const response = await axios.get(
-        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.access_token}`,
-            Accept: "application/json",
-          },
-        }
-      );
-
-      const googleUserDetails = response.data;
-      const userDetails = await apiService.post("/v1/users", {
-        ...googleUserDetails,
-        role: "user",
-      });
-
-      setUserData(userDetails.user);
-      setIsLoggedIn(true);
-
-      Cookies.set("accessToken", userDetails.accessToken, { expires: 1 / 24 });
-      Cookies.set("refreshToken", userDetails.refreshToken, { expires: 7 });
-
-      localStorage.setItem(
-        "userData",
-        JSON.stringify({
-          id: userDetails.user.id,
-          userName: userDetails.user.userName,
-          rollNumber: userDetails.user.rollNumber,
-          batch: userDetails.user.batch,
-          profileImage: userDetails.user.profileImage,
-          role: userDetails.user.role,
-        })
-      );
-
-      showToast(
-        "success",
-        "Login Successful",
-        "You have successfully logged in."
-      );
+      await logout();
+      showToast("success", "Logout Successful", "You have been logged out successfully.");
+      navigate('/');
     } catch (error) {
-      console.error("Login failed", error);
-      showToast("error", "Login Failed", "Failed to fetch user details.");
+      console.error("Logout failed", error);
+      showToast("error", "Logout Failed", "An error occurred during logout.");
     }
   };
 
-  const showToast = (severity, summary, detail) => {
-    toast.current.show({ severity, summary, detail });
+  const handleLoginClick = () => {
+    login();
   };
 
   return (
@@ -137,11 +64,11 @@ export default function Sidebar() {
       <div className={`sidebar ${sidebarClosed ? "close" : ""}`}>
         <div className="logo-details">
           <i className="bx bx-menu" onClick={toggleSidebar}></i>
-          <span className="logo_name">CP CLUB</span>
+          <span className="logo_name">Coders' Club</span>
         </div>
         <ul className="nav-links">
-          {isLoggedIn &&
-            userData?.role === "ADMIN" &&
+          {isAuthenticated &&
+            isAdmin &&
             adminSidebarData.map((item, index) => (
               <li
                 key={index}
@@ -210,34 +137,30 @@ export default function Sidebar() {
           ))}
 
           <li>
-            {isLoggedIn && (
+            {isAuthenticated ? (
               <div className="profile-details">
                 <div className="profile-content">
                   <img
-                    src={
-                      userData?.profileImage ||
-                      "https://placehold.co/600x400@2x.png"
-                    }
+                    src={user?.profileImage || "https://placehold.co/600x400@2x.png"}
                     alt="profileImg"
                   />
                 </div>
                 <div className="name-job">
                   <div className="profile_name">
-                    {userData?.userName || "User"}
+                    {user?.userName || "User"}
                   </div>
-                  {/* TODO @Aroson1: Add the codeforces verification */}
-                  {/* <div className="job">Verified</div> */}
                 </div>
-                <a href="/profile">
-                  <i className="bx bx-edit"></i>
-                </a>
+                <i 
+                  className="bx bx-log-out" 
+                  onClick={handleLogout}
+                  style={{ cursor: "pointer" }}
+                ></i>
               </div>
-            )}
-            {!isLoggedIn && (
+            ) : (
               <div
                 className="profile-details"
                 style={{ cursor: "pointer" }}
-                onClick={login}
+                onClick={handleLoginClick}
               >
                 <div className="profile-content">
                   <img src={loginImage} alt="profileImg" />

@@ -71,6 +71,7 @@ export default function AdminPage() {
 
   return (
     <section className="">
+      <SideBar />
       <img alt="..." className="dots" src={dots} />
 
       <section id="team" className="cpc-team">

@@ -18447,7 +18447,7 @@ hr.line-deafult {
   max-width: 880px;
 }
 .page-header .content-center.brand {
-  width: 47%;
+  /* width: 47%; */
 }
 .page-header footer {
   position: absolute;

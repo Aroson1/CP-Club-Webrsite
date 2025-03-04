@@ -144,7 +144,7 @@ export default function ManageBlogs() {
       const blogData = {
         title: editedBlog.title,
         image: editedBlog.image,
-        authorImage: editedBlog.authorImage || "https://placeholder.co/32x32",
+        authorImage: "https://placeholder.co/32x32",
         authorName: editedBlog.authorName,
         date: editedBlog.date,
         comments: 0,
