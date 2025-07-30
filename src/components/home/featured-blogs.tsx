@@ -1,66 +1,97 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useMemo, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import Masonry from "react-masonry-css";
+import ReactFlow, {
+  Node,
+  Edge,
+  Controls,
+  Background,
+  BackgroundVariant,
+  MarkerType,
+  addEdge,
+  Connection,
+  useNodesState,
+  useEdgesState,
+} from "reactflow";
+import BlogNode from "../blog-nodes/BlogNode";
+import "reactflow/dist/style.css";
+import { getRecentBlogs } from "@/app/_data/_blogs-details";
 
-// Sample blog data
-const featuredBlogs = [
-  {
-    id: 1,
-    title: "Getting Started with WebAssembly",
-    excerpt: "Learn how to use WebAssembly to boost your web applications' performance with near-native speed.",
-    image: "https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    author: "Alex Morgan",
-    date: "2025-03-15",
-    category: "Web Development"
-  },
-  {
-    id: 2,
-    title: "Building Microservices with Kubernetes",
-    excerpt: "A deep dive into architecting scalable applications using Kubernetes and containerization.",
-    image: "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    author: "Samantha Lee",
-    date: "2025-03-05",
-    category: "DevOps"
-  },
-  {
-    id: 3,
-    title: "Rust for Systems Programming",
-    excerpt: "Exploring how Rust provides memory safety without sacrificing performance for low-level programming.",
-    image: "https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    author: "James Wilson",
-    date: "2025-02-28",
-    category: "Languages"
-  },
-  {
-    id: 4,
-    title: "Machine Learning Fundamentals",
-    excerpt: "An introduction to key ML concepts and how to implement your first neural network.",
-    image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    author: "Priya Patel",
-    date: "2025-02-20",
-    category: "AI & ML"
-  },
-  {
-    id: 5,
-    title: "Building Real-time Apps with WebSockets",
-    excerpt: "How to leverage WebSocket technology for interactive, real-time web applications.",
-    image: "https://images.pexels.com/photos/7988079/pexels-photo-7988079.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    author: "Michael Chen",
-    date: "2025-02-15",
-    category: "Web Development"
-  }
-];
+const featuredBlogs = getRecentBlogs(3); // Get the 3 most recent blogs
 
 export function FeaturedBlogs() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  const blogArticles = featuredBlogs.map((blog) => ({
+    id: blog.id.toString(),
+    image: blog.image,
+    date: blog.date,
+    authorName: blog.author,
+    title: blog.title,
+    tags: blog.tags.slice(0, 2), // Take first 2 tags
+  }));
+
+  const initialNodes: Node[] = useMemo(() => {
+    const nodes: Node[] = [];
+
+    blogArticles.slice(0, 3).forEach((article, index) => {
+      nodes.push({
+        id: `blog-${index}`,
+        type: "blogNode",
+        position: { x: index * 320, y: 100 },
+        draggable: false,
+        data: {
+          article,
+          nodeIndex: index,
+          hasNext: index < 2,
+        },
+      });
+    });
+
+    return nodes;
+  }, []);
+
+  const initialEdges: Edge[] = useMemo(() => {
+    const edges: Edge[] = [];
+
+    for (let i = 0; i < 2; i++) {
+      edges.push({
+        id: `edge-${i}`,
+        source: `blog-${i}`,
+        sourceHandle: "forward-blog-source",
+        target: `blog-${i + 1}`,
+        targetHandle: "forward-blog-target",
+        type: "smoothstep",
+        animated: true,
+        style: { stroke: "#00d4ff", strokeWidth: 3, zIndex: 100 },
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#00d4ff" },
+      });
+    }
+
+    return edges;
+  }, []);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  const onConnect = useCallback(
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
+  );
+
+  const nodeTypes = useMemo(
+    () => ({
+      blogNode: BlogNode,
+    }),
+    []
+  );
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -68,9 +99,9 @@ export function FeaturedBlogs() {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
-    }
+        delayChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -78,85 +109,92 @@ export function FeaturedBlogs() {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5 }
-    }
-  };
-
-  const breakpointColumnsObj = {
-    default: 3,
-    1024: 2,
-    640: 1
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
-    <section className="section-padding bg-background" id="featured-blogs">
-      <div className="max-w-7xl mx-auto container-padding">
-        <motion.div 
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Featured <span className="text-primary">Blogs</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Dive into technical articles written by our members covering everything 
-              from web development to machine learning and system design.
-            </p>
-          </motion.div>
-
-          <Masonry
-            breakpointCols={breakpointColumnsObj}
-            className="masonry-grid"
-            columnClassName="masonry-grid_column"
-          >
-            {featuredBlogs.map((blog) => (
-              <motion.div key={blog.id} variants={itemVariants}>
-                <BlogCard blog={blog} />
-              </motion.div>
-            ))}
-          </Masonry>
-
-          <motion.div variants={itemVariants} className="mt-12 text-center">
-            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Link href="/blogs">
-                View All Blogs
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </motion.div>
-        </motion.div>
+    <div className="h-screen py-8 px-6 relative overflow-hidden">
+      {/* Terminal-style background patterns */}
+      <div className="absolute inset-0 opacity-[0.02]">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: `
+                 linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px),
+                 linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px)
+               `,
+            backgroundSize: "50px 50px",
+          }}
+        />
       </div>
-    </section>
-  );
-}
 
-function BlogCard({ blog }: { blog: typeof featuredBlogs[0] }) {
-  return (
-    <Link href={`/blogs/${blog.id}`}>
-      <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-card/80 backdrop-blur-sm">
-        <div className="relative h-48 w-full">
-          <Image 
-            src={blog.image} 
-            alt={blog.title} 
-            fill
-            className="object-cover"
-          />
-          <div className="absolute top-2 right-2 bg-primary/90 text-primary-foreground text-xs font-medium py-1 px-2 rounded">
-            {blog.category}
-          </div>
-        </div>
-        <CardContent className="pt-4">
-          <h3 className="text-xl font-bold mb-2 line-clamp-2">{blog.title}</h3>
-          <p className="text-muted-foreground mb-4 line-clamp-3">{blog.excerpt}</p>
-        </CardContent>
-        <CardFooter className="text-sm text-muted-foreground border-t border-border/50 pt-3 flex justify-between">
-          <span>{blog.author}</span>
-          <span>{new Date(blog.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-        </CardFooter>
-      </Card>
-    </Link>
+      <motion.div
+        ref={ref}
+        variants={containerVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="max-w-7xl mx-auto relative z-10 h-full flex flex-col"
+      >
+        {/* Section Header */}
+        <motion.div variants={itemVariants} className="text-center mb-8">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight font-nevera">
+            Blog LinkedList
+            <span className="text-cyan-400 font-mono text-lg ml-4">
+              // traverse(&amp;knowledge)
+            </span>
+          </h2>
+
+          
+        </motion.div>
+
+        {/* ReactFlow Container for Blog Nodes */}
+        <motion.div
+          variants={itemVariants}
+          className="flex-1 overflow-hidden border border-cyan-400/20 rounded-lg"
+        >
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            nodeTypes={nodeTypes}
+            fitView
+            // fitViewOptions={{ padding: 0.3 }}
+            zoomOnScroll={false}
+            zoomOnPinch={false}
+            zoomOnDoubleClick={false}
+            panOnDrag={false}
+            nodesDraggable={true}
+            nodesConnectable={false}
+            elementsSelectable={false}
+            proOptions={{ hideAttribution: true }}
+            className="z-400"
+          >
+            <Background
+              variant={BackgroundVariant.Dots}
+              gap={25}
+              size={1.5}
+              color="#8e919530"
+              className="opacity-30"
+            />
+          </ReactFlow>
+        </motion.div>
+
+        {/* View All Button */}
+        <motion.div variants={itemVariants} className="text-center mt-6">
+          <Button
+            asChild
+            className="bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 hover:bg-cyan-500/20 font-mono"
+          >
+            <Link href="/blogs" className="flex items-center gap-2">
+              <span>blogList.explore()</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Button>
+        </motion.div>
+      </motion.div>
+    </div>
   );
 }

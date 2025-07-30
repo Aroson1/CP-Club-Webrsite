@@ -1,56 +1,89 @@
-// components/HeroIframe.js
 import { useEffect, useRef, useState } from "react";
 
 export function HeroIframe() {
-  const iframeRef = useRef(null);
-  const [height, setHeight] = useState("600px"); // initial guess
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [height, setHeight] = useState("100vh");
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Optionally auto-resize the iframe height to match its content.
+  // Preload the iframe content
   useEffect(() => {
-    function adjustHeight() {
-      if (!iframeRef.current) return;
-      try {
-        const doc = iframeRef.current.contentDocument;
-        if (doc && doc.body) {
-          // measure the full height of <body> inside the iframe
-          const newHeight = doc.body.scrollHeight + "px";
-          setHeight(newHeight);
-        }
-      } catch (e) {
-        // cross‐origin restrictions? Unlikely if hero.html is on same domain.
-      }
-    }
+    const preloadFrame = document.createElement("iframe");
+    preloadFrame.style.display = "none";
+    preloadFrame.src = "/hero.html";
+    preloadFrame.onload = () => {
+      setIsLoaded(true);
+      document.body.removeChild(preloadFrame);
+    };
+    document.body.appendChild(preloadFrame);
 
-    const frame = iframeRef.current;
-    if (frame) {
-      frame.addEventListener("load", adjustHeight);
-    }
-    // Clean up listener on unmount
     return () => {
-      if (frame) frame.removeEventListener("load", adjustHeight);
+      if (document.body.contains(preloadFrame)) {
+        document.body.removeChild(preloadFrame);
+      }
     };
   }, []);
 
+  useEffect(() => {
+    const frame = iframeRef.current;
+    if (!frame) return;
+
+    const adjustHeight = () => {
+      try {
+        const doc = frame.contentDocument;
+        if (doc?.body) {
+          setHeight(doc.body.scrollHeight + "px");
+        }
+      } catch (error) {
+        console.error("Error accessing iframe content:", frame.src);
+        setHeight("100vh");
+      }
+    };
+
+    frame.addEventListener("load", adjustHeight);
+    return () => frame.removeEventListener("load", adjustHeight);
+  }, []);
+
   return (
-    <iframe
-      ref={iframeRef}
-      src="/hero.html"
-      style={{
-        width: "100%",
-        height: "100vh",
-        border: "0",
-        overflow: "hidden",
-      }}
-      scrolling="no"
-      title="Hero Slider"
-    />
+    <div className="relative w-full h-[100vh]">
+      <iframe
+        ref={iframeRef}
+        src="/hero.html"
+        className="w-full h-full border-0"
+        scrolling="no"
+        title="Hero Slider"
+      />
+    </div>
   );
 }
 
 export function HeroSection() {
   return (
-    <section className="hero-section">
-      <HeroIframe />
+    <section
+      className="hero-section bg-[#10002b]"
+      style={{ minHeight: "100vh" }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: "100vh",
+          position: "relative",
+        }}
+      >
+        <iframe
+          src="/hero.html"
+          style={{
+            width: "100%",
+            height: "100vh",
+            border: "0",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 10,
+          }}
+          scrolling="no"
+          title="Hero Slider"
+        />
+      </div>
     </section>
   );
 }
