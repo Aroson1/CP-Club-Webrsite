@@ -56,7 +56,7 @@ export default function SignInPage() {
         <motion.div variants={itemVariants} className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
             <Code2 className="h-8 w-8 text-primary" />
-            <span className="font-montserrat font-bold text-xl">TechBytes</span>
+            <span className="font-montserrat font-bold text-xl">CCK</span>
           </Link>
         </motion.div>
 

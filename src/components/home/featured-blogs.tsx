@@ -115,7 +115,6 @@ export function FeaturedBlogs() {
 
   return (
     <div className="h-screen py-8 px-6 relative overflow-hidden">
-      {/* Terminal-style background patterns */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div
           className="h-full w-full"

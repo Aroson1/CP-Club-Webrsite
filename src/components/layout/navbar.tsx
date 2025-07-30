@@ -12,16 +12,9 @@ import {
 } from '@/components/ui/sheet';
 import { ModeToggle } from '@/components/theme/mode-toggle';
 import { Code2, Menu, UserCircle } from 'lucide-react';
+import { navigationData } from '@/app/_data/_navigationData';
 
-const navLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Events', href: '/events' },
-  { name: 'Our Team', href: '/team' },
-  { name: 'Hall of Fame', href: '/hall-of-fame' },
-  { name: 'Resources', href: '/resources' },
-  { name: 'Blogs', href: '/blogs' },
-  { name: 'Leaderboard', href: '/leaderboard' },
-];
+const navLinks = navigationData.navLinks;
 
 export function Navbar() {
   const pathname = usePathname();
@@ -52,7 +45,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between h-full">
         <Link href="/" className="flex items-center gap-2">
           <Code2 className="h-8 w-8 text-primary" />
-          <span className="font-montserrat font-bold text-xl">TechBytes</span>
+          <span className="font-montserrat font-bold text-xl">CCK</span>
         </Link>
 
         {/* Desktop Navigation */}

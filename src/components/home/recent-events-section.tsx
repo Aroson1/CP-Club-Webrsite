@@ -39,7 +39,6 @@ const itemVariants = {
 export default function RecentEventsSection() {
   return (
     <section className="min-h-screen pt-5 px-6 relative overflow-hidden">
-      {/* Terminal-style background patterns */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div
           className="h-full w-full"

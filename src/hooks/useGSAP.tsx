@@ -1,4 +1,3 @@
-// hooks/useGSAP.ts or utils/gsapConfig.ts
 import { useEffect, useRef } from 'react';
 
 export const useGSAPSmoothScroll = (options = {}) => {
@@ -9,15 +8,12 @@ export const useGSAPSmoothScroll = (options = {}) => {
     
     const initGSAP = async () => {
       try {
-        // Dynamically import GSAP modules to avoid SSR issues
         gsap = (await import('gsap')).default;
         ScrollTrigger = (await import('gsap/ScrollTrigger')).ScrollTrigger;
         ScrollSmoother = (await import('gsap/ScrollSmoother')).ScrollSmoother;
         
-        // Register plugins
         gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
         
-        // Default configuration
         const defaultOptions = {
           wrapper: "#smooth-wrapper",
           content: "#smooth-content",
@@ -28,7 +24,6 @@ export const useGSAPSmoothScroll = (options = {}) => {
           ...options
         };
         
-        // Initialize ScrollSmoother
         smoothScrollerRef.current = ScrollSmoother.create(defaultOptions);
         
       } catch (error) {
@@ -36,13 +31,11 @@ export const useGSAPSmoothScroll = (options = {}) => {
       }
     };
 
-    // Only initialize on client side
     if (typeof window !== 'undefined') {
       initGSAP();
     }
     
     return () => {
-      // Clean up
       if (smoothScrollerRef.current) {
         smoothScrollerRef.current.kill();
       }
@@ -55,7 +48,6 @@ export const useGSAPSmoothScroll = (options = {}) => {
   return smoothScrollerRef.current;
 };
 
-// Utility function for common GSAP animations
 export const createParallaxEffect = async (selector: string, speed = 0.5) => {
   try {
     const gsap = (await import('gsap')).default;
@@ -78,7 +70,6 @@ export const createParallaxEffect = async (selector: string, speed = 0.5) => {
   }
 };
 
-// Global smooth scroll wrapper component
 export const GSAPSmoothScrollWrapper = ({ 
   children, 
   className = "",

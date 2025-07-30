@@ -1,4 +1,3 @@
-// components/providers/GSAPProvider.tsx
 "use client";
 import { createContext, useContext, useEffect, useRef, ReactNode } from "react";
 
@@ -44,13 +43,11 @@ export const GSAPProvider = ({
     if (isInitializedRef.current || typeof window === "undefined") return;
 
     try {
-      // Dynamically import GSAP modules
       const gsap = (await import("gsap")).default;
       const ScrollTrigger = (await import("gsap/ScrollTrigger")).ScrollTrigger;
       const ScrollSmoother = (await import("gsap/ScrollSmoother"))
         .ScrollSmoother;
 
-      // Register plugins
       gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
       // Kill existing smoother if it exists
@@ -58,7 +55,6 @@ export const GSAPProvider = ({
         smootherRef.current.kill();
       }
 
-      // Initialize ScrollSmoother
       smootherRef.current = ScrollSmoother.create({
         wrapper: "#smooth-wrapper",
         content: "#smooth-content",
@@ -110,7 +106,7 @@ export const GSAPProvider = ({
     if (typeof window !== "undefined") {
       window.addEventListener("popstate", handleRouteChange);
 
-      // Also listen for programmatic navigation
+      // Listen for programmatic navigation
       const originalPushState = history.pushState;
       const originalReplaceState = history.replaceState;
 

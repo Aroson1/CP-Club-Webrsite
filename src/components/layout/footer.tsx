@@ -1,104 +1,136 @@
-import Link from 'next/link';
-import { Code2, Github, Linkedin, Twitter, Youtube } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+"use client";
 
-const quickLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Events', href: '/events' },
-  { name: 'Resources', href: '/resources' },
-  { name: 'Hall of Fame', href: '/hall-of-fame' },
-  { name: 'Our Team', href: '/team' },
-  { name: 'Blogs', href: '/blogs' },
-  { name: 'Leaderboard', href: '/leaderboard' },
-];
-
-const contactInfo = [
-  { label: 'Email', value: 'techbytes@university.edu' },
-  { label: 'Location', value: 'CS Building, Room 2104' },
-  { label: 'Meeting Times', value: 'Wednesdays 6-8 PM' },
-];
-
-const socialLinks = [
-  { name: 'GitHub', icon: Github, href: '#' },
-  { name: 'Twitter', icon: Twitter, href: '#' },
-  { name: 'LinkedIn', icon: Linkedin, href: '#' },
-  { name: 'YouTube', icon: Youtube, href: '#' },
-];
+import { useEffect } from "react";
+import { motion } from "framer-motion";
+import gsap from "gsap";
+import { Github, Twitter, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { footerData } from "@/app/_data/_footerData";
 
 export function Footer() {
+  const iconMap: Record<string, any> = {
+    Github,
+    Twitter,
+    Instagram,
+    Mail,
+    MapPin,
+    Phone
+  };
+
+  const socialLinks = footerData.socialLinks.map(link => ({
+    ...link,
+    icon: iconMap[link.iconName]
+  }));
+
+  const quickLinks = footerData.quickLinks;
+
+  const contactInfo = footerData.contactInfo.map(info => ({
+    ...info,
+    icon: iconMap[info.iconName]
+  }));
+
+  const motionProps = {
+    initial: { opacity: 0, y: 10 },
+    whileInView: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 },
+  };
+
   return (
-    <footer className="bg-card text-card-foreground mt-16">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <Code2 className="h-8 w-8 text-primary" />
-              <span className="font-montserrat font-bold text-xl">TechBytes</span>
-            </div>
-            <p className="text-muted-foreground mt-2 max-w-md">
-              Building the next generation of developers through collaboration, 
-              innovation, and community.
-            </p>
+    <footer className="relative bg-black text-purple-400 font-mono overflow-hidden mx-3 mt-3">
+      <div className="mx-auto">
+        {/* Terminal window wrapper */}
+        <div className="border-t border-x border-purple-600 rounded-t-lg shadow-lg bg-black/80">
+          <div className="px-4 py-2 border-b border-purple-600 flex items-center space-x-2">
+            <span className="mr-auto text-xs">bash:~$ ssh cck@footer</span>
           </div>
-
-          <div>
-            <h3 className="font-montserrat font-medium text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="text-muted-foreground hover:text-primary transition-colors">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-montserrat font-medium text-lg mb-4">Contact</h3>
-            <ul className="space-y-3">
-              {contactInfo.map((item) => (
-                <li key={item.label} className="text-muted-foreground">
-                  <span className="font-medium text-foreground">{item.label}:</span> {item.value}
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-6">
-              <h3 className="font-montserrat font-medium text-lg mb-3">Follow Us</h3>
-              <div className="flex space-x-4">
-                {socialLinks.map((link) => {
+          <div className="px-6 py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Description */}
+            <motion.div
+              {...motionProps}
+              className="col-span-1 lg:col-span-2 space-y-4"
+            >
+              <h3 className="text-2xl font-bold text-purple-400">
+                $ sudo coders-club --peak 
+              </h3>
+              <p className="text-sm text-gray-500">
+                A student-led coding community fostering development and
+                learning.
+              </p>
+              <div className="flex space-x-3">
+                {socialLinks.map((link, idx) => {
                   const Icon = link.icon;
                   return (
-                    <Link 
-                      key={link.name} 
+                    <motion.a
+                      key={idx}
                       href={link.href}
-                      className="text-muted-foreground hover:text-primary transition-colors"
+                      whileHover={{ scale: 1.2, color: "#33ff33" }}
+                      className="text-purple-400 hover:text-purple-200"
+                      aria-label={link.label}
                     >
-                      <span className="sr-only">{link.name}</span>
-                      <Icon className="h-5 w-5" />
-                    </Link>
+                      <Icon className="w-6 h-6" />
+                    </motion.a>
                   );
                 })}
               </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
 
-        <Separator className="my-8 bg-muted/50" />
-        
-        <div className="flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} TechBytes Coding Club. All rights reserved.</p>
-          <div className="mt-4 md:mt-0 flex space-x-6">
-            <Link href="/privacy" className="hover:text-primary transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="hover:text-primary transition-colors">
-              Terms of Service
-            </Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">
-              Contact Us
-            </Link>
+            {/* Quick Links */}
+            <motion.div
+              {...{
+                ...motionProps,
+                transition: { ...motionProps.transition, delay: 0.1 },
+              }}
+            >
+              <h4 className="text-lg font-semibold text-purple-400 mb-4">
+                $ ls -a
+              </h4>
+              <ul className="space-y-2">
+                {quickLinks.map((link, idx) => (
+                  <li key={idx} className="flex items-center">
+                    <span className="mr-2">{`>>`}</span>
+                    <a
+                      href={link.href}
+                      className="hover:text-purple-200 transition-colors text-sm"
+                    ><span className="mr-2">cd</span>
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Contact Info */}
+            <motion.div
+              {...{
+                ...motionProps,
+                transition: { ...motionProps.transition, delay: 0.2 },
+              }}
+            >
+              <h4 className="text-lg font-semibold text-purple-400 mb-4">
+                $ contact --info
+              </h4>
+              <ul className="space-y-2 text-sm">
+                {contactInfo.map((info, idx) => {
+                  const Icon = info.icon;
+                  return (
+                    <li key={idx} className="flex items-center space-x-2">
+                      <Icon className="w-4 h-4" />
+                      <span className="text-gray-500">{info.text}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </motion.div>
+          </div>
+
+          {/* Footer bottom line */}
+          <div className="px-6 py-4 border-t border-purple-600 flex justify-between text-xs">
+            <span>© 2025 Coders' Club IIIT-K. All rights reserved.</span>
+            <span>
+              made by:{" "}
+              <a href="https://www.linkedin.com/in/alex-gijo/" className="underline hover:text-purple-200 font-nevera">
+                @Aroson
+              </a>
+            </span>
           </div>
         </div>
       </div>
