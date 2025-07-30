@@ -7,22 +7,17 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import { GSAPProvider } from "@/components/providers/GSAPProvider";
+import { nevera } from "./fonts";
 
-// Importing CSS files for styling
-import "@/assets/css/nucleo-icons.css";
-// import "@/assets/scss/blk-design-system-react.scss";
-import "@/assets/css/blk-design-system-react.css";
-import "@/assets/css/blog.css";
-import "@/assets/css/base-theme.css";
-import "@/assets/css/sidebar.css";
-
-// Importing GSAP and its plugins
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { CustomEase } from "gsap/CustomEase";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import Navigation from "@/components/navigation";
+import { SmoothCursor } from "@/components/ui/smooth-cursor";
+import Sidebar from "@/components/sidebar/Sidebar";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(
     useGSAP,
@@ -33,7 +28,6 @@ if (typeof window !== "undefined") {
   );
 }
 
-// Exporting metadata for the application
 export const metadata: Metadata = {
   title: "Coders' Club IIITK",
   description:
@@ -57,7 +51,6 @@ export default function RootLayout({
     >
       <head>
         <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon.png" />
-        <link rel="stylesheet" href="/bootstrap.min.css" />
         <link
           href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800"
           rel="stylesheet"
@@ -81,28 +74,27 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
         />
       </head>
-      <body className={`dark index-page`}>
+      <body className={`dark index-page ${nevera.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="dark">
+          <Sidebar />
           <GSAPProvider
             smoothConfig={{
-              smooth: 1.5, // Adjust smoothness (0-3)
-              effects: true, // Enable data-speed attributes
-              normalizeScroll: true, // Better mobile support
+              smooth: 1.5, 
+              effects: true,
+              normalizeScroll: true, 
               ignoreMobileResize: true,
             }}
           >
+            
+
             <div className="flex min-h-screen flex-col">
-              <Navbar />
               <main className="flex-1">{children}</main>
-              {/* <Footer /> */}
             </div>
             <Toaster />
             <SonnerToaster />
           </GSAPProvider>
         </ThemeProvider>
-        {/* <Script src="/bootstrap.bundle.min.js" /> */}
-        <Script src="/wow.min.js" />
-        <Script src="/events.js" />
+        
         <Script src="https://kit.fontawesome.com/eeecb13881.js" />
       </body>
     </html>

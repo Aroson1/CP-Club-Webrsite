@@ -1,3 +1,11 @@
+import localFont from 'next/font/local';
+
+export const nevera = localFont({
+  src: '../../public/fonts/Nevera-Regular.otf',
+  display: 'swap',
+  variable: '--font-nevera',
+});
+
 // import { IBM_Plex_Mono, Montserrat } from 'next/font/google';
 
 // export const montserrat = Montserrat({
