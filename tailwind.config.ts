@@ -12,6 +12,7 @@ const config: Config = {
       fontFamily: {
         'montserrat': ['var(--font-montserrat)', 'sans-serif'],
         'ibm-plex-mono': ['var(--font-ibm-plex-mono)', 'monospace'],
+        'nevera': ['var(--font-nevera)', 'serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
