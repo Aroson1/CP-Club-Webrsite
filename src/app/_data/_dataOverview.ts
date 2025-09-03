@@ -26,6 +26,9 @@ export const dataFiles = {
   // Resources page data
   resourcesData: "@/app/_data/_resourcesData.js",
   
+  // Leaderboard page data - coding competition rankings
+  leaderboardData: "@/app/_data/_leaderboardData.js",
+  
   
   // COMPATIBILITY LAYER
   
@@ -56,7 +59,11 @@ export const dataAccessPatterns = {
   blogDetail: "getBlogById(id) from _blogs-details.js",
   
   // For event detail page - gets specific event
-  eventDetail: "getEventById(id) from _eventsData.js"
+  eventDetail: "getEventById(id) from _eventsData.js",
+  
+  // For leaderboard page - gets all rankings and stats
+  leaderboardRankings: "leaderboardData from _leaderboardData.js",
+  leaderboardTopPerformers: "getTopPerformers(5) from _leaderboardData.js"
 };
 
 // Helper functions available
@@ -73,7 +80,14 @@ export const helperFunctions = {
   "getUpcomingEvents()": "Get all upcoming events",
   "getCompletedEvents()": "Get all completed events", 
   "getFeaturedEvents()": "Get high priority events",
-  "getEventById(id)": "Get specific event by ID"
+  "getEventById(id)": "Get specific event by ID",
+  
+  // Leaderboard helpers
+  "getTopPerformers(count)": "Get top performers by score",
+  "getLeaderboardByCategory(category)": "Get rankings by category (algorithms, datastructures, contests, problems)",
+  "getMemberById(id)": "Get specific member data by ID",
+  "getRecentActivity()": "Get recent coding activity across all members",
+  "getTopLanguages()": "Get most popular programming languages"
 };
 
 // Components updated to use centralized data:
@@ -83,6 +97,7 @@ export const updatedComponents = [
   "src/app/page.tsx - now uses getRecentBlogs() for fallback data",
   "src/app/blogs/page.tsx - now uses blogPosts from _blogs-details.js",
   "src/app/_data/_sampleArticles.ts - now re-exports from _blogs-details.js",
+  "src/app/leaderboard/page.tsx - now uses leaderboardData with coding/DS theme",
   
   // Previously updated components  
   "src/components/home/about-section.tsx",
